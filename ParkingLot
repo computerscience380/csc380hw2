@@ -1,0 +1,24 @@
+
+
+
+import java.util.ArrayList;
+/**
+ *
+ * @author sean
+ */
+public class ParkingLot {
+    
+    ArrayList<Car> lot = new ArrayList<>(200);
+    
+    public boolean isEmpty(){
+        return lot.isEmpty();
+    }
+    
+    public void addCar(Car c){        
+        lot.add(c);       
+    }
+    public void removeCar(Car c){
+        lot.remove(c);
+    }
+    
+}
