@@ -21,7 +21,7 @@ public class ParkingLotTest {
         
         lot.addCar(c);
         
-        if(lot.lot.isEmpty()){
+        if(lot.isEmpty()){
             fail("Error: car not added");
         }
     }
