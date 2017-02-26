@@ -39,4 +39,18 @@ public void testRemoveCar(){
         
         
 }
+ @Test
+    public void testIsFull(){
+        Parking lot = new Parking();
+        
+        Car c = new Car();
+        
+        if(!lot.isFull()){
+            fail("Error: lot is full");
+            
+        }
+    }
+
+
+
 }
