@@ -23,5 +23,11 @@ public class ParkingLot {
     public void removeCar(Car c){
         lot.remove(c);
     }
+     public boolean isFull(){
+        if(lot.get(lot.size()-1) != null){
+            return true;
+    } else{
+            return false;
+        }
     
 }
