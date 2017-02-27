@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class ParkingLot {
     
-    ArrayList<Car> lot = new ArrayList<>(200);
+    ArrayList<Car> lot = new ArrayList<>();
     
     public boolean isEmpty(){
        if (lot.isEmpty()){
@@ -18,13 +18,17 @@ public class ParkingLot {
     }
     
     public void addCar(Car c){        
-        lot.add(c);       
+        if(lot.size() <= 200){
+            lot.add(c);       
+        } else {
+            
+        }
     }
     public void removeCar(Car c){
         lot.remove(c);
     }
      public boolean isFull(){
-        if(lot.get(lot.size()-1) != null){
+        if(lot.size() == 200){
             return true;
     } else{
             return false;
