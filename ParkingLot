@@ -12,9 +12,10 @@ public class ParkingLot {
     
     public boolean isEmpty(){
        if (lot.isEmpty()){
-       return true;
+        return true;
        }else{
-       return false;
+        return false;
+       }
     }
     
     public void addCar(Car c){        
@@ -24,14 +25,16 @@ public class ParkingLot {
             
         }
     }
+    
     public void removeCar(Car c){
         lot.remove(c);
     }
+    
      public boolean isFull(){
         if(lot.size() == 200){
             return true;
-    } else{
+        } else{
             return false;
         }
-    
+    }
 }
