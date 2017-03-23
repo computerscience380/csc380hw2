@@ -8,9 +8,18 @@
  *
  * @author Zach
  */
-class Car {
-   //save license plate and name into a structure of some sort, maybe a hashmap?
-    //this will be used by cops to know what car should be where if necessary
+public class Car {
+    String licencePlate;
+    String name;
     
-    
+    public String returnPlate(){
+        return licencePlate;
+    }
+    public String returnName(){
+        return name;
+    }
+    public Car(String l, String t) {
+        licencePlate = l;
+        name = t;
+    }
 }
