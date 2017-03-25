@@ -12,21 +12,37 @@ package com.mycompany.csc380homework;
  */
 public class Reservation {
     
-    String licencePlate;
-    String name;
-    int permit;
+    private String licencePlate;
+    private String name;
+    private int permit;
     
-    public String returnPlate(){
+    public String getPlate(){
         return licencePlate;
     }
-    public String returnName(){
+    public String getName(){
         return name;
     }
     
+    public int getPermit(){
+        return permit;
+    }
+    
+    private void setPlate(String pl){
+        licencePlate = pl;
+    }
+    
+    private void setName(String n){
+        name = n;
+    }
+    
+    private void setPermit(int p){
+        permit = p;
+    }
+    
     public Reservation(String n, String plate, int permitNum){
-       licencePlate = plate;
-       name = n;
-       permit = permitNum; 
+       this.setPlate(plate);
+       this.setName(n);
+       this.setPermit(permitNum); 
     }
     
     

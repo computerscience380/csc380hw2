@@ -25,34 +25,12 @@ public class Parking_Spot {
     
     public void update(){      
         if (!this.getMonth().equals(Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()))) { //check whether is on right month
-            System.out.println("Updating spot");
+            System.out.println("Updating parking spot");
             month = Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
-            int year = Calendar.getInstance().get(Calendar.YEAR);
-            int m;
-            if (isLeapYear(year) && month.equals("Febuary")) {
-                m = 0;
-            } else {
-                m = Calendar.getInstance().get(Calendar.MONTH)+1;
-            }
-            
-            if(m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12){
-                this.setDays(three);
-            } else if(m == 2){
-                this.setDays(one);
-            }  else if(m == 4 || m == 6 || m == 9 || m == 11) {
-                this.setDays(two);
-            }  else {
-                this.setDays(leap);
-            }         
+            this.setDays(Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH));
         } else {
-            System.out.println("Parking spot up to date");
+            System.out.println("Parking spot already up to date");
         }
-    }
-    
-    private static boolean isLeapYear(int year) {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, year);
-        return cal.getActualMaximum(Calendar.DAY_OF_YEAR) > 365;
     }
     
     public String getMonth(){
@@ -61,33 +39,35 @@ public class Parking_Spot {
     
     private void setDays(int d){
         days = new Day_res[d];
+        
+        Day_res day;
+        for (int i = 0; i < d; i++) {//initialize all days
+            
+        }
     }
     
     public int getDays(){
         return days.length;
     }
     
-    public Parking_Spot(int iD, int m, String fullM){//m is a number representaion of the month(I.E. 3 is march) and fullM is a string representation(I.E. "March")     months are needed so it knows how many days to add(28,29,30,or 31)
+    public Parking_Spot(int iD){//id # of spots from 1 to whatever the max is set to when lot is created
         spotID = iD;
-        month = fullM;       
-        if(m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12){
-            this.setDays(three);//31 days
-        } else if(m == 4 || m == 6 || m == 9 || m == 11) {
-            this.setDays(two); //30 days
-        } else if(m == 2){
-            this.setDays(one); //28 days
-        } else {
-            this.setDays(leap);//leap year AND febuary so 29 days
-        }
+        month = Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());       
+        this.setDays(Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH));
     }
     
-    public boolean reservation(){ //maybe void?, add param's later
+    public boolean reservation(){ //maybe void?, maybe boolean so we know if the reservation is addable, add param's later
         //!unwritten!
         return true;//just here so its not anoyingly red :(
     }
     
     public int getID(){
         return spotID;
+    }
+    
+    public void spotToString(){
+        System.out.println("Parking spot number " + this.getID()); //afterwards go thru each day and get all reservation data
+        
     }
     
 }

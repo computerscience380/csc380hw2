@@ -10,9 +10,10 @@ package com.mycompany.csc380homework;
  * @author Sean McGrath
  */
 public class Day_res {
-    private final Time_Frame[] frames = new Time_Frame[48];//48 reservable time slots, one for each half an hour in a 24 hour day
+    private final int day;
+    private Time_Frame[] frames;
 
-    public boolean create_Res(Reservation r ,int time){
+    public boolean create_Res(Reservation r ,int timeStart, int timeEnd){
             if (frames[time].hasRes()) {
                 return false;
             } else {
@@ -21,5 +22,17 @@ public class Day_res {
             }
     }
     
+    private void setDay(){
+        
+    }
+    
+    public int getDay(){
+        return day;
+    }
+    
+    public Day_res(){
+        this.frames = new Time_Frame[48];
+        //initialize the time frames here, also set the day number
+    }
     //more methods to retrieve the information/check if a reservation is available
 }
