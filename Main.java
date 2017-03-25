@@ -27,7 +27,7 @@ public class Main {
         String command;
 
         ArrayList<ParkingLot> lots = new ArrayList(); //parking lot arrayList
-        ArrayList<String> alerts = new ArrayList();//police alerts
+        ArrayList<Alert> alerts = new ArrayList();//police alerts
 
         do {
             Scanner kb;
@@ -85,6 +85,7 @@ public class Main {
                                         int ID = -1;
                                         boolean failure = false;
                                         String lotName = null;
+                                        String plate = null;
 
                                         do {
                                             System.out.println("Please enter the name of the parking lot this reservation will be made at out of the following options, be aware capitalization matters:");
@@ -267,16 +268,26 @@ public class Main {
                                                 }
                                             }
                                         } while (failure);
-
-                                        System.out.println("Please enter a valid permit ID number:");//not done yet
-                                        System.out.print(">");
                                         
+                                        do{
+                                        System.out.println("Please enter a valid permit ID number:");   //permit ID 
+                                        System.out.print(">");
+                                        kb = new Scanner(System.in);
+                                            if (kb.hasNextInt()) {
+                                                ID = kb.nextInt();
+                                                failure = false;
+                                            } else {
+                                                System.out.println("ERROR: invalid permit ID");
+                                                System.out.println("Please enter a valid NUMBER permit ID");
+                                                failure = true;
+                                            }               
+                                        }while(failure);
                                         //check whether it is one or more times being reserved then check if they are availble(if not all are availbe return which are and tell to retry)
-                                        //Reservation r = new Reservation();
+                                        Reservation r = new Reservation(name, plate, ID);
                                         //then create the reservation and send it into the system based on what parking lot is asked for.
                                         
                                         // sucess -> some sort of congratulations including their name
-                                        //failure -> 'returning to action selection'
+                                        //failure -> apologize and 'returning to action selection'
                                     }
                                     break;
                                 }
@@ -293,7 +304,7 @@ public class Main {
                                 case "logout": //logout
                                     System.out.println("logging out");
                                     break;
-                                case "alertpolice":   //ask what parking lot and what parking spot, used for when a spot is in misuse and creates an alert that is shown to a cop the next time they login    !unwritten!
+                                case "alertpolice":   //ask what parking lot and what parking spot, used for when a spot is in misuse and creates an alert that is shown to a cop the next time they login  ALSO ask for an extra comment to be sent to cops  !unwritten!
                                     if (lots.isEmpty()) {
                                         System.out.println("No parking lots exist for there to be problems in");
                                     } else {
