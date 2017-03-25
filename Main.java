@@ -32,9 +32,7 @@ public class Main {
         
         do{
             Scanner kb;
-
             System.out.println("Welcome to the SUNY Oswego Parking Lot Reservation System!");
-
             System.out.println("Please specify what type of user you are from the following options, or shut down the system:");
             System.out.println("|User|Police|Admin|ShutDown|");
             kb = new Scanner(System.in);
@@ -69,7 +67,12 @@ public class Main {
                                 userCommand = userCommand.replaceAll("\\s","");
                                 
                                 switch (userCommand) {
-                                    case "reserve":    // reserve one ore more time slots    !unwritten!
+                                    case "reserve":    // reserve one ore more time slots    !mostly unwritten!
+                                        System.out.println("Please enter your full name as LASTNAME, FIRSTNAME");
+                                        System.out.println("Please enter the day you wish to reserve on");
+                                        System.out.println("Please enter the hour, minutes, and am or pm in format <hour period min> for the start of your reservation, be aware that this will be rounded down to the nearest half hour:");
+                                        System.out.println("Please enter the hour, minutes, and am or pm in format <hour period min> for the end of your reservation, be aware that this will be rounded up to the nearest half hour:");
+                                        System.out.println("Please enter a valid permit ID number:");//for the above we can also go with the 24hour method instead of AM or PM
                                         break;
                                     case "availabespots":
                                         //take time, check how many if any are available at that time
@@ -151,7 +154,7 @@ public class Main {
                         System.out.println();
                         do{
                             System.out.println("Please enter a command from the following options:");
-                            System.out.println("|CreateLot|RemoveLot|displaylotnames|DisplayAllReservations|CheckParkingSpot|Logout|");//spaces and capitalization do not matter
+                            System.out.println("|CreateLot|RemoveLot|displaylotnames|DisplayAllReservations|CheckParkingSpot|RemoveReservation|Logout|");//spaces and capitalization do not matter
                             kb = new Scanner(System.in);
                             adminCommand = kb.nextLine();
                             String originalC = adminCommand;
@@ -205,7 +208,7 @@ public class Main {
                                     break;  //get all reservations and display them in an orderly manner  includes: spot#, name, liscence plate, and authentication#    !unwritten!
                                 case "checkparkingspot":
                                     break;  //get the information from a specific spot         !unwritten!
-                                case "removeareservation": //remove a pre-existing reservation for whatever reason     !unwritten!                                    
+                                case "removereservation": //remove a pre-existing reservation for whatever reason, based on name of reserver     !unwritten!                                    
                                     break;
                                 case "logout":
                                     System.out.println("logging out");//logout, return to previous switch board
