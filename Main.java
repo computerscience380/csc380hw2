@@ -32,7 +32,9 @@ public class Main {
         
         do{
             Scanner kb;
+
             System.out.println("Welcome to the SUNY Oswego Parking Lot Reservation System!");
+
             System.out.println("Please specify what type of user you are from the following options, or shut down the system:");
             System.out.println("|User|Police|Admin|ShutDown|");
             kb = new Scanner(System.in);
