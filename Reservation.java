@@ -3,14 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package com.mycompany.csc380homework;
+
 
 /**
  *
- * @author Zach
+ * @author Sean McGrath
  */
-public class Car {
+public class Reservation {
+    
     String licencePlate;
     String name;
+    int permit;
     
     public String returnPlate(){
         return licencePlate;
@@ -18,8 +22,12 @@ public class Car {
     public String returnName(){
         return name;
     }
-    public Car(String l, String t) {
-        licencePlate = l;
-        name = t;
+    
+    public Reservation(String n, String plate, int permitNum){
+       licencePlate = plate;
+       name = n;
+       permit = permitNum; 
     }
+    
+    
 }
