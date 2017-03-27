@@ -12,12 +12,12 @@ package com.mycompany.csc380homework;
  */
 public class Reservation {
     
-    private String licencePlate;
+    private String licensePlate;
     private String name;
     private int permit;
     
     public String getPlate(){
-        return licencePlate;
+        return licensePlate;
     }
     public String getName(){
         return name;
@@ -28,7 +28,7 @@ public class Reservation {
     }
     
     private void setPlate(String pl){
-        licencePlate = pl;
+        licensePlate = pl;
     }
     
     private void setName(String n){
@@ -43,6 +43,11 @@ public class Reservation {
        this.setPlate(plate);
        this.setName(n);
        this.setPermit(permitNum); 
+    }
+    
+    @Override
+    public String toString(){
+        return  "Reserved by: " + name + " License Plate: " + licensePlate + " Permit ID: " + permit;
     }
     
     

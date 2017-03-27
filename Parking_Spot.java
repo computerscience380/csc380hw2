@@ -13,17 +13,13 @@ import java.util.Locale;
  * @author Sean McGrath
  */
 public class Parking_Spot {
-    
+
     private final int spotID;
-    private static int one = 28;
-    private static int two = 30;
-    private static int three = 31;
-    private static int leap = 29;
     private String month;
-    
+
     public Day_res days[];
-    
-    public void update(){      
+
+    public void update() {
         if (!this.getMonth().equals(Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()))) { //check whether is on right month
             System.out.println("Updating parking spot");
             month = Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
@@ -32,42 +28,54 @@ public class Parking_Spot {
             System.out.println("Parking spot already up to date");
         }
     }
-    
-    public String getMonth(){
+
+    public String getMonth() {
         return month;
     }
-    
-    private void setDays(int d){
+
+    private void setDays(int d) {
         days = new Day_res[d];
+        Day_res temp;
         
-        Day_res day;
         for (int i = 0; i < d; i++) {//initialize all days
-            
+            temp = new Day_res(i+1);
+            days[i] = temp;
         }
     }
-    
-    public int getDays(){
+
+    public int getDays() {
         return days.length;
     }
-    
-    public Parking_Spot(int iD){//id # of spots from 1 to whatever the max is set to when lot is created
+
+    public Parking_Spot(int iD) {//id # of spots from 1 to whatever the max is set to when lot is created
         spotID = iD;
-        month = Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());       
+        month = Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
         this.setDays(Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH));
     }
-    
-    public boolean reservation(){ //maybe void?, maybe boolean so we know if the reservation is addable, add param's later
-        //!unwritten!
-        return true;//just here so its not anoyingly red :(
+
+    public void reserve(Reservation r,int d ,String T1) {
+        days[d].create_Res(r, T1);
     }
-    
-    public int getID(){
+
+    public void reserve(Reservation r,int d ,String T1, String T2) {
+        days[d].create_Res(r, T1, T2);
+    }
+
+    public int getID() {
         return spotID;
     }
-    
-    public void spotToString(){
-        System.out.println("Parking spot number " + this.getID()); //afterwards go thru each day and get all reservation data
-        
+
+    public boolean spotsAvailbleAtTimeAndDay(int d, String time) {
+        System.out.println(days[d]);
+        return days[d].can_Res(time);
+    }
+
+    public boolean spotsAvailbleAtTimeAndDay(int d, String T1, String T2) {
+        return days[d].can_Res(T1, T2);
     }
     
+    public void printResInfo(int d){
+      //  System.out.println(days[d].???);
+    }
+
 }

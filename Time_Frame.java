@@ -11,16 +11,24 @@ package com.mycompany.csc380homework;
  */
 public class Time_Frame {
     Reservation res;
+    boolean hasRes = false;
+    String time;
     
-    public void addRes(Reservation r) {
+    public void addRes(Reservation r, String t) {
+        time = t;
         res = r;
+        hasRes = true;
     }
     
     public boolean hasRes(){
-        if (res == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return hasRes;
+    }
+    
+    public Reservation getRes(){
+        return res;
+    }
+    
+    public void removeRes(){
+        
     }
 }

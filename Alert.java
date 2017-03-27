@@ -25,10 +25,10 @@ public class Alert {
     }
     
     
-    public void toFullString(){
+    public void toPrint(){
         System.out.println("Alert occured in lot " + location + " in parking spot " + parkingSpot);
         if (comment == null) {
-            System.out.println("There were no further comments");
+            System.out.println("There were no further comments from the user");
         } else {
             System.out.println("The user further added: " + comment);
         }
