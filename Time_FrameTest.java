@@ -21,8 +21,9 @@ public class Time_FrameTest {
         String one = "1";
         String two = "2";
         int three = 3;
+        String time = "6:30 am";
         Reservation r = new Reservation(one, two, three);
-        t.addRes(r);
+        t.addRes(r, time);
         
         if (!t.hasRes()) {
             fail("ERROR: RESERVATION NOT ADDED");

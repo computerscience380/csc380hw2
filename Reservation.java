@@ -47,7 +47,9 @@ public class Reservation {
     
     @Override
     public String toString(){
-        return  "Reserved by: " + name + " License Plate: " + licensePlate + " Permit ID: " + permit;
+        return  "reserved by: " + name + 
+                " License Plate: " + licensePlate + 
+                " Permit ID: " + permit;
     }
     
     

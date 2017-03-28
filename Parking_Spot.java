@@ -16,16 +16,13 @@ public class Parking_Spot {
 
     private final int spotID;
     private String month;
-
     public Day_res days[];
 
     public void update() {
         if (!this.getMonth().equals(Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()))) { //check whether is on right month
-            System.out.println("Updating parking spot");
+            System.out.println("Updating parking spot " + this.getID());
             month = Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
             this.setDays(Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH));
-        } else {
-            System.out.println("Parking spot already up to date");
         }
     }
 
@@ -66,16 +63,10 @@ public class Parking_Spot {
     }
 
     public boolean spotsAvailbleAtTimeAndDay(int d, String time) {
-        System.out.println(days[d]);
         return days[d].can_Res(time);
     }
 
     public boolean spotsAvailbleAtTimeAndDay(int d, String T1, String T2) {
         return days[d].can_Res(T1, T2);
     }
-    
-    public void printResInfo(int d){
-      //  System.out.println(days[d].???);
-    }
-
 }

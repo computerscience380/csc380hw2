@@ -17,45 +17,46 @@ public class Day_res {
     private int day;
     private Time_Frame[] frames;
 
-    public void create_Res(Reservation r, String T1, String T2) {
-        if (this.can_Res(timeStart, timeEnd)) {
-            for (int i = timeStart; i < timeEnd; i++) {
-                frames[i].addRes(r);
-                //return true;
+    public void create_Res(Reservation r, String T1, String T2) {//go from first res to one less than last res like in can_Res(because T2 isnt a res its only a marker for hen reservations stop)
+
+        for (int i = this.translateToInt(T1); i < this.translateToInt(T2); i++) {
+            if (!frames[i].hasRes()) {
+                frames[i].addRes(r, unTranslate(i));
+            } else {
+                System.out.println("How?, somehow already reserved");
             }
-        } else {
-            //print out all the times that are already reserved
-            //return false;
         }
+
+        //print out all the times that are already reserved <- NO that goes in "can res"
+        //return false;
     }
+
     public void create_Res(Reservation r, String time) {
         frames[this.translateToInt(time)].addRes(r, time);
     }
 
     public boolean can_Res(String timeStart, String timeEnd) { //check for conflicting reservation times
         boolean can = true;
-        for (int i = this.translateToInt(timeStart); i <= this.translateToInt(timeEnd) ; i++) {
-            if (frames[i].hasRes) {
+        for (int i = this.translateToInt(timeStart); i < this.translateToInt(timeEnd); i++) {
+            if (frames[i].hasRes()) {
                 can = false;//can't
+                break;
             }
         }
         return can;
     }
 
     public boolean can_Res(String time) {
-        System.out.println(time);
-        System.out.println(frames.length);
         return !frames[this.translateToInt(time)].hasRes();
     }
-    
-    public void getWhy(){//when the 2 time get res fails, use this to print out all conflicting times
-        
+
+    public void getWhy() {//when the 2 time get res fails, use this to print out all conflicting times
+
     }
 
-    public void printRes(String time) {
-        System.out.println(frames[this.translateToInt(time)].getRes().toString());
-    }
-
+//    public void printRes(String time) {
+//        System.out.println(frames[this.translateToInt(time)].getRes().toString());
+//    }
     private void setDay(int d) {
         day = d;
     }
@@ -72,20 +73,122 @@ public class Day_res {
         }
         //initialize the time frames here, also set the day number
     }
-    //more methods to retrieve the information/check if a reservation is available
 
     //another method to translate the time of a res into a printable time
-    
-    public int translateToInt(String time) {
+    private String unTranslate(int i) {
+        switch (i) {
+            case 0:
+                return "12:00 am";
+            case 1:
+                return "12:30 am";
+            case 2:
+                return "1:00 am";
+            case 3:
+                return "1:30 am";
+            case 4:
+                return "2:00 am";
+            case 5:
+                return "2:30 am";
+            case 6:
+                return "3:00 am";
+            case 7:
+                return "3:30 am";
+            case 8:
+                return "4:00 am";
+            case 9:
+                return "4:30 am";
+            case 10:
+                return "5:00 am";
+            case 11:
+                return "5:30 am";
+            case 12:
+                return "6:00 am";
+            case 13:
+                return "6:30 am";
+            case 14:
+                return "7:00 am";
+            case 15:
+                return "7:30 am";
+            case 16:
+                return "8:00 am";
+            case 17:
+                return "8:30 am";
+            case 18:
+                return "9:00 am";
+            case 19:
+                return "9:30 am";
+            case 20:
+                return "10:00 am";
+            case 21:
+                return "10:30 am";
+            case 22:
+                return "11:00 am";
+            case 23:
+                return "11:30 am";
+            case 24:
+                return "12:00 pm";
+            case 25:
+                return "12:30 pm";
+            case 26:
+                return "1:00 pm";
+            case 27:
+                return "1:30 pm";
+            case 28:
+                return "2:00 pm";
+            case 29:
+                return "2:30 pm";
+            case 30:
+                return "3:00 pm";
+            case 31:
+                return "3:30 pm";
+            case 32:
+                return "4:00 pm";
+            case 33:
+                return "4:30 pm";
+            case 34:
+                return "5:00 pm";
+            case 35:
+                return "5:30 pm";
+            case 36:
+                return "6:00 pm";
+            case 37:
+                return "6:30 pm";
+            case 38:
+                return "7:00 pm";
+            case 39:
+                return "7:30 pm";
+            case 40:
+                return "8:00 pm";
+            case 41:
+                return "8:30 pm";
+            case 42:
+                return "9:00 pm";
+            case 43:
+                return "9:30 pm";
+            case 44:
+                return "10:00 pm";
+            case 45:
+                return "10:30 pm";
+            case 46:
+                return "11:00 pm";
+            case 47:
+                return "11:30 pm";
+        }
+        return null;
+    }
+
+    private int translateToInt(String time) {
         String pattern = "^([1-9]|1[0-2]):([0-5][0-9]) ([APap][mM]$)";
         Pattern r = Pattern.compile(pattern);
         Matcher ma = r.matcher(time);
+        if (time.equals("11:59 pm")) {
+            return 48;
+        }
 
         if (ma.matches()) {
             String h = ma.group(1);
             int m = Integer.parseInt(ma.group(2));
             String period = ma.group(3);
-            String t = "";
 
             if (period.equals("AM") || period.equals("am") || period.equals("aM") || period.equals("Am")) { //unfinished, needs more logic updating
                 switch (h) {

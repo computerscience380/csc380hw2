@@ -5,6 +5,9 @@
  */
 package com.mycompany.csc380homework;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,45 +35,6 @@ public class Main {
         //print saying congrats or something maybe, along with which parking spot they've reserved  "you've sucessfully reserved parking spot '---' from 'time' to 'time+29'!"
         //print saying congrats or something maybe, along with which parking spot they've reserved  "you've sucessfully reserved parking spot '---' from 'time' to 'time'!"
 
-        do {
-            System.out.println("enter number: ");
-            Scanner kn = new Scanner(System.in);
-            String lol = kn.nextLine();
-            System.out.println(roundDown(lol));
-        } while (true);
-
-        String number = "10";
-        String num2 = "11";
-        int result = Integer.parseInt(number);
-        int result2 = Integer.parseInt(num2);
-        System.out.println(result);
-        System.out.println(result2);
-        System.out.println(result2 - result);
-        String back = String.valueOf(result);
-        System.out.println(back);
-
-//        if (m.find()) {
-//            System.out.println("Time" + m.group(0));
-//            System.out.println("hh " + m.group(1));
-//            System.out.println("mm " + m.group(2));
-//            System.out.println("ss " + m.group(3));
-//            
-//            String lp = m.group(1) + ":" + "30" + ":" + m.group(3);
-//            Pattern t = Pattern.compile(pattern);
-//            System.out.println(lp);
-//            Matcher z = t.matcher(lp);
-//            //m.replaceAll("12");
-//            if(z.find()){
-//            System.out.println("Time" + z.group(0));
-//            System.out.println("hh " + z.group(1));
-//            System.out.println("mm " + z.group(2));
-//            System.out.println("ss " + z.group(3));
-//            } else {
-//                System.out.println("uhh??");
-//            }
-//        } else {
-//            System.out.println("NO MATCH! format mismatch");
-//        }
         ArrayList<Parking_Lot> lots = new ArrayList(); //parking lot arrayList
         ArrayList<Alert> alerts = new ArrayList();//police alerts
 
@@ -78,7 +42,7 @@ public class Main {
             Scanner kb;
             System.out.println("Welcome to the SUNY Oswego Parking Lot Reservation System!");
             System.out.println("Please specify what type of user you are from the following options, or shut down the system:");
-            System.out.println("|User|Police|Admin|ShutDown|");
+            System.out.println("|User|Police|Admin|CreateAccount|ShutDown|");//should I keep 'CreateAccount' ???
             System.out.print(">");
             kb = new Scanner(System.in);
             command = kb.nextLine();
@@ -100,9 +64,10 @@ public class Main {
                     kb = new Scanner(System.in);
                     password = kb.nextLine();
                     a = authenticate(userName, password);
+                    System.out.println();
+
                     if (a) {
                         System.out.println("Welcome student/employee/guest!");
-                        System.out.println();
                         do {
                             System.out.println("Please enter a command from the following options:");
                             System.out.println("|Reserve|AvailabeSpots|AlertPolice|Logout|");
@@ -114,12 +79,12 @@ public class Main {
                             userCommand = userCommand.replaceAll("\\s", "");
 
                             switch (userCommand) {
-                                case "reserve": // reserve one ore more time slots   maybe a max amount of reservations?     how much is too much    !mostly unwritten!
+                                case "reserve": // reserve one ore more time slots   maybe a max amount of reservations?     how much is too much
                                 {
                                     if (lots.isEmpty()) {
                                         System.out.println("ERROR: no existing parking lots to make reservations at");
                                     } else {
-                                        String name = null;
+                                        String name;
                                         int day = -1;
                                         int ID = -1;
                                         boolean failure = false;
@@ -183,11 +148,9 @@ public class Main {
                                                 kb = new Scanner(System.in);
                                                 String ip;
                                                 String pattern = "^([1-9]|1[0-2]):([0-5][0-9]) ([APap][mM]$)";
-                                                System.out.println("Enter the time of the start of our reservation like the following example: 01:14 am   ;be aware that this will be rounded down to the nearest half hour:");
+                                                System.out.println("Enter the time of the start of your reservation like the following example: 1:14 am   ;be aware that this will be rounded down to the nearest half hour:");
                                                 System.out.print(">");
                                                 ip = kb.nextLine();
-
-                                                System.out.println(ip);
                                                 Pattern r = Pattern.compile(pattern);
                                                 Matcher m = r.matcher(ip);
                                                 if (m.matches()) {//good input, so now round
@@ -204,24 +167,17 @@ public class Main {
                                                 String ip;
                                                 String pattern = "^([1-9]|1[0-2]):([0-5][0-9]) ([APap][mM]$)";
                                                 String leavePattern = "([0]$)";
-                                                System.out.println("Enter the time of the end of our reservation or enter 0 if you are only reserving one time period   ;be aware that this will be rounded up to the nearest half hour:");
+                                                System.out.println("Enter the time of the end of your reservation or enter 0 if you are only reserving one time period   ;be aware that this will be rounded up to the nearest half hour:");
                                                 System.out.print(">");
                                                 ip = kb.nextLine();
-
                                                 Pattern r1 = Pattern.compile(leavePattern);
                                                 Matcher l = r1.matcher(ip);
-
                                                 if (!l.matches()) {
                                                     Pattern r = Pattern.compile(pattern);
                                                     Matcher m = r.matcher(ip);
-                                                    if (m.matches()) {//good input, so now round
-                                                        //check if it is 
-                                                        endTime = roundUp(ip);
-                                                        if (endTime.equals("2days")) {
-                                                            System.out.println("ERROR: you are trying to reserve times from more than one day");
-                                                            failure = false;
-                                                            redo = true;
-                                                        } else if (endTime.equals("false")) {
+                                                    if (m.matches()) {
+                                                        endTime = roundUp(ip);//good input, so now round
+                                                        if (endTime.equals("false")) {
                                                             System.out.println("ERROR: an unknown error has occured");
                                                             failure = true;
                                                         } else {//make sure that the times are in the right order
@@ -245,7 +201,7 @@ public class Main {
                                                     endTime = "none";
                                                 }
                                             } while (failure);
-                                        } while (!redo);
+                                        } while (redo);
 
                                         do {
                                             System.out.println("Please enter a valid permit ID number:");   //permit ID 
@@ -256,7 +212,6 @@ public class Main {
                                                 failure = false;
                                             } else {
                                                 System.out.println("ERROR: invalid permit ID");
-                                                System.out.println("Please enter a valid NUMBER permit ID");
                                                 failure = true;
                                             }
                                         } while (failure);
@@ -269,37 +224,35 @@ public class Main {
                                                 plate = kb.nextLine();
                                                 failure = false;
                                             } else {
-                                                System.out.println("ERROR: invalid permit ID");
+                                                System.out.println("ERROR: invalid licence plate");
                                                 failure = true;
                                             }
                                         } while (failure);
 
                                         boolean cont = true;
-                                        int res = 0;
 
-                                        if (endTime.equals("none")) {//only one
-                                            res = 1;
-                                        } else { //two or more
-                                            res = 2;
-                                        }
                                         //check whether it is one or more times being reserved then check if they are availble(if not all are availbe return which are and tell to retry)
-
                                         Reservation r = new Reservation(name, plate, ID);
                                         for (Iterator<Parking_Lot> iterator = lots.iterator(); iterator.hasNext();) {
                                             Parking_Lot i = iterator.next();
                                             if (i.getLotName().equals(lotName)) {
-                                                if (res == 1) {//add single reservation
+                                                if (endTime.equals("none")) {//add single reservation
                                                     if (lots.get(lots.indexOf(i)).spotsAvailbleAtTimeAndDay(day, startTime)) {
                                                         lots.get(lots.indexOf(i)).addReservation(r, day, startTime);
+                                                        cont = true;
                                                     } else {
-                                                        System.out.println("ERROR: at time " + startTime + " on day " + day + " of this month a reservation is already in place for every parking spot in " + lotName + " parking lot");
+                                                        System.out.println("ERROR: from time " + startTime + " to time " + roundOff(startTime) + " on day " + day + " of this month a reservation is already in place for every parking spot in " + lotName + " parking lot");
                                                         cont = false;
                                                         break;
                                                     }
                                                 } else {
-                                                    if () {
-                                                        //add more than one
+                                                    if (lots.get(lots.indexOf(i)).spotsAvailbleAtTimeAndDay(day, startTime, endTime)) {
+                                                        //add more than one time (from time A to time B)
                                                         lots.get(lots.indexOf(i)).addReservation(r, day, startTime, endTime);
+                                                        cont = true;
+                                                    } else {
+                                                        //the "why" method
+                                                        cont = false;//100% needs more
                                                     }
                                                 }
                                                 break;
@@ -308,14 +261,17 @@ public class Main {
 
                                         if (cont) {//maybe check with res and output different success 
                                             System.out.println("Congratulations " + name + " your reservation has been sucessfully made!");
+                                        } else if (cont &&) {
+
                                         } else {
-                                            System.out.println("Aplogies your reservation was unable to be completed at this time");
+                                            System.out.println("Unfortunatly your reservation was unable to be completed at this time");
                                         }
                                         //then create the reservation and send it into the system based on what parking lot is asked for.
 
                                         // sucess -> some sort of congratulations including their name
                                         //failure -> apologize and 'returning to action selection'
                                     }
+                                    System.out.println("");
                                     break;
                                 }
                                 case "availabespots":
@@ -351,7 +307,6 @@ public class Main {
                     break;
                 }
                 case "police": {
-                    //somewhere around here will be the alerts, or maybe within the doWhile below(must be after login)(for each alert give the alert information along with the information of what SHOULD be in the spot allerted to(the reservation info))
                     boolean a;
                     String userName;
                     String password;
@@ -364,10 +319,48 @@ public class Main {
                     kb = new Scanner(System.in);
                     password = kb.nextLine();
                     a = authenticate(userName, password);
+                    System.out.println();
+
+                    String response = null;
+                    if (a) {
+                        if (!alerts.isEmpty()) {
+                            System.out.println("There are currently " + alerts.size() + " active alerts");
+                            System.out.println("Would you like to view them?(y/n)");
+                            System.out.print(">");
+                            kb = new Scanner(System.in);
+                            response = kb.next();
+                            if (response.equals("y")) {
+                                int c = 1;
+                                for (Alert i : alerts) {
+                                    i.toPrint(c);
+                                    alerts.remove(i);
+                                    c++;
+                                }
+                            }
+                        }
+                    }
+
                     if (a) {
                         System.out.println("Welcome officer!");
-                        System.out.println();
                         do {
+                            if (!response.equals("n")) {
+                                if (!alerts.isEmpty()) {
+                                    System.out.println("There are currently " + alerts.size() + " active alerts");
+                                    System.out.println("Would you like to view them?(y/n)");
+                                    System.out.print(">");
+                                    kb = new Scanner(System.in);
+                                    response = kb.next();
+                                    if (response.equals("y")) {
+                                        int c = 1;
+                                        for (Alert i : alerts) {
+                                            i.toPrint(c);
+                                            c++;
+                                        }
+                                    }
+                                }
+                            }
+                            response = null;
+
                             System.out.println("Please enter a command from the following options:");
                             System.out.println("|DisplayAllReservations|CheckParkingSpot|Logout|");
                             System.out.print(">");
@@ -398,7 +391,7 @@ public class Main {
                     break;
                 }
                 case "admin": {
-                    //"authenticate"(any loggon will work)   then go to new dowhile with new options    like<create parking lots><get current reservations>
+                    //"authenticate"(any loggon will work)   
                     boolean a;
                     String userName;
                     String password;
@@ -411,9 +404,9 @@ public class Main {
                     kb = new Scanner(System.in);
                     password = kb.nextLine();
                     a = authenticate(userName, password);
+                    System.out.println();
                     if (a) {
                         System.out.println("Welcome Administrator!");
-                        System.out.println();
                         do {
                             System.out.println("Please enter a command from the following options:");
                             System.out.println("|CreateLot|RemoveLot|displaylotnames|DisplayAllReservations|CheckParkingSpot|RemoveReservation|Logout|");//spaces and capitalization do not matter
@@ -487,11 +480,16 @@ public class Main {
                                         System.out.println("Parking lot: " + i.getLotName());
                                     }
                                     break;
+                                case "availableSpots":
+                                    //check if at least one spot available at given time    make boolean spots avaiable?
+                                    //same as the one in user
+                                    break;
                                 case "displayallreservations":
-                                   
+
                                     break;  //get all reservations and display them in an orderly manner  includes: spot#, name, liscence plate, and authentication#    !unwritten!
                                 case "checkparkingspot":
                                     break;  //get the information from a specific spot         !unwritten!
+                                //use !canres on each possible res in the spot if cant res then return the information
                                 case "removereservation": //remove a pre-existing reservation for whatever reason, based on name of reserver     !unwritten!                                    
                                     break;//take full name and look to remove any reservations under them
                                 case "logout":
@@ -539,7 +537,7 @@ public class Main {
             if (p1.equals(p2)) {
                 int h1 = Integer.parseInt(ma.group(1));
                 int h2 = Integer.parseInt(mb.group(1));
-                if (h2 > h1) {
+                if (h2 < h1) {
                     return false;
                 } else if (h1 == h2) {
                     int m1 = Integer.parseInt(ma.group(2));
@@ -569,6 +567,21 @@ public class Main {
         //return T2 > T1 BAISICALLY;
     }
 
+    public static String roundOff(String time) {
+        String pattern = "^([1-9]|1[0-2]):([0-5][0-9]) ([APap][mM]$)";
+        Pattern r = Pattern.compile(pattern);
+        Matcher ma = r.matcher(time);
+        if (ma.matches()) {
+            int m = Integer.parseInt(ma.group(2));
+            m = m + 29;
+            String fin = ma.group(1) + ":" + m + " " + ma.group(3);
+            return fin;
+        } else {
+            System.out.println("ERROR: BAD INPUT");
+            return time;
+        }
+    }
+
     public static String roundUp(String time) {
         String pattern = "^([1-9]|1[0-2]):([0-5][0-9]) ([APap][mM]$)";
         Pattern r = Pattern.compile(pattern);
@@ -580,7 +593,7 @@ public class Main {
             String period = ma.group(3);
             String t = "";
 
-            if (period.equals("AM") || period.equals("am") || period.equals("aM") || period.equals("Am")) { //unfinished, needs more logic updating
+            if (period.equals("AM") || period.equals("am") || period.equals("aM") || period.equals("Am")) {
                 switch (h) {
                     case "12":
                         if (m <= 29) {
@@ -753,7 +766,7 @@ public class Main {
                         if (m <= 29) {
                             t = "11:30 pm";
                         } else {
-                            t = "2days"; //midnight, bad
+                            t = "11:59 pm"; //midnight, since it is the second time it isnt reserved its only a marker for when reserving stops
                         }
                         break;
                     default:
@@ -779,7 +792,7 @@ public class Main {
             String period = ma.group(3);
             String t;
 
-            if (period.equals("AM") || period.equals("am") || period.equals("aM") || period.equals("Am")) { //unfinished, needs more logic updating
+            if (period.equals("AM") || period.equals("am") || period.equals("aM") || period.equals("Am")) {
                 switch (h) {
                     case "12":
                         if (m <= 29) {
@@ -966,146 +979,4 @@ public class Main {
             return "false";
         }
     }
-
-//    do {
-//                                            boolean cont;
-//                                            System.out.println("Please enter the hour, minutes, and am or pm in format <hour min period> for the start of your reservation, be aware that this will be rounded down to the nearest half hour:");
-//                                            System.out.print(">");
-//                                            kb = new Scanner(System.in);
-//                                            if (kb.hasNextInt()) {//hour
-//                                                startH = kb.nextInt();
-//                                                if (validateHour(startH)) {
-//                                                    cont = true;
-//                                                    failure = false;
-//                                                } else {
-//                                                    System.out.println("ERROR: the hour value given: " + startH + " is not a real hour");
-//                                                    cont = false;
-//                                                    failure = true;
-//                                                }
-//                                            } else {
-//                                                System.out.println("ERROR: invalid hour please enter a NUMBER");
-//                                                cont = false;
-//                                                failure = true;
-//                                            }
-//
-//                                            if (cont) {//min
-//                                                if (kb.hasNextInt()) {
-//                                                    startM = kb.nextInt();
-//                                                    if (validateMin(startM)) {
-//                                                        cont = true;
-//                                                        failure = false;
-//                                                    } else {
-//                                                        System.out.println("ERROR: the minute value given: " + startM + " is not a real minute");
-//                                                        cont = false;
-//                                                        failure = true;
-//                                                    }
-//                                                } else {
-//                                                    System.out.println("ERROR: invalid minute please enter a NUMBER");
-//                                                    cont = false;
-//                                                    failure = true;
-//                                                }
-//                                            }
-//
-//                                            if (cont) {//period
-//                                                if (kb.hasNext()) {
-//                                                    startP = kb.nextLine();
-//                                                    startP = startP.toUpperCase();
-//                                                    startP = startP.replaceAll("\\s", "");
-//                                                    if (startP.equals("AM") || startP.equals("PM")) {
-//                                                        failure = false;
-//                                                    } else {
-//                                                        System.out.println("ERROR: invalid period input of " + startP);
-//                                                        System.out.println("Please input AM or PM");
-//                                                        failure = true;
-//                                                    }
-//                                                } else {
-//                                                    System.out.println("ERROR: no period input given");
-//                                                    System.out.println("Please input AM or PM");
-//                                                    failure = true;
-//                                                }
-//                                            }
-//
-//                                            if (cont) {
-//                                                startTime = StartForm(startH, startM, startP);
-//                                            }
-//
-//                                        } while (failure);
-//
-//                                        do {
-//                                            boolean cont = true;
-//                                            System.out.println("Please enter the hour, minutes, and am or pm in format <hour min period> for the end of your reservation, if you only want to reserve a single time then enter 'none' for this, be aware that this will be rounded up to the nearest half hour:");
-//                                            System.out.print(">");
-//                                            kb = new Scanner(System.in);
-//                                            if (!kb.hasNextInt()) {  //hour or 'none'
-//                                                String leave = kb.next();
-//                                                leave = leave.toLowerCase();
-//                                                leave = leave.replaceAll("\\s", "");
-//                                                if (leave.equals("none")) {
-//                                                    endH = -2;
-//                                                    endM = -2;
-//                                                    endP = "na";
-//                                                    System.out.println("Understood, only one time slot will be atempted to be reserved");
-//                                                    cont = false;
-//                                                    failure = false;
-//                                                } else {
-//                                                    System.out.println("ERROR: invalid hour please enter a NUMBER");
-//                                                    cont = false;
-//                                                    failure = true;
-//                                                }
-//                                            } else {
-//                                                endH = kb.nextInt();
-//                                                if (validateHour(endH)) {
-//                                                    cont = true;
-//                                                    failure = false;
-//                                                } else {
-//                                                    System.out.println("ERROR: the hour value given: " + endH + " is not a real hour");
-//                                                    cont = false;
-//                                                    failure = true;
-//                                                }
-//                                            }
-//
-//                                            if (cont) {//min
-//                                                if (kb.hasNextInt()) {
-//                                                    endM = kb.nextInt();
-//                                                    if (validateMin(endM)) {
-//                                                        cont = true;
-//                                                        failure = false;
-//                                                    } else {
-//                                                        System.out.println("ERROR: the minute value given: " + endM + " is not a real minute");
-//                                                        cont = false;
-//                                                        failure = true;
-//                                                    }
-//                                                } else {
-//                                                    System.out.println("ERROR: invalid minute please enter a NUMBER");
-//                                                    cont = false;
-//                                                    failure = true;
-//                                                }
-//                                            }
-//
-//                                            if (cont) {//period
-//                                                if (kb.hasNext()) {
-//                                                    endP = kb.nextLine();
-//                                                    endP = endP.toUpperCase();
-//                                                    endP = endP.replaceAll("\\s", "");
-//                                                    if (endP.equals("AM") || endP.equals("PM")) {
-//                                                        failure = false;
-//                                                    } else {
-//                                                        System.out.println("ERROR: invalid period input of " + endP);
-//                                                        System.out.println("Please input AM or PM");
-//                                                        failure = true;
-//                                                    }
-//                                                } else {
-//                                                    System.out.println("ERROR: no period input given");
-//                                                    System.out.println("Please input AM or PM");
-//                                                    failure = true;
-//                                                }
-//                                            }
-//                                            if (cont) {
-//                                                endTime = endForm(endH, endM, endP); //format and check
-//                                                if (startTime < endTime) {
-//                                                    System.out.println("ERROR: the second time given must be after the first time");
-//                                                    failure = true;
-//                                                }
-//                                            }
-//                                        } while (failure);
 }
