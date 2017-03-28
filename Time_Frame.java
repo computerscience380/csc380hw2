@@ -10,25 +10,35 @@ package com.mycompany.csc380homework;
  * @author Sean McGrath
  */
 public class Time_Frame {
-    Reservation res;
-    boolean hasRes = false;
-    String time;
+    private Reservation res;
+    boolean has = false;
+    private String time;
     
     public void addRes(Reservation r, String t) {
-        time = t;
+        this.setTime(t);
         res = r;
-        hasRes = true;
+        has = true;
     }
     
     public boolean hasRes(){
-        return hasRes;
+        return has;
     }
     
     public Reservation getRes(){
         return res;
     }
     
+    public String getTime(){
+        return time;
+    }
+    
+    private void setTime(String t){
+        time = t;
+    }
+    
     public void removeRes(){
-        
+      has = false;
+      res = null;
+      this.setTime(null);
     }
 }

@@ -20,7 +20,7 @@ public class Day_resTest {
         Day_res d = new Day_res(day);
         
         if (d.getDay() != day) {
-            fail("ERROR: DAY NOT CORRECTLY ADDED");
+            fail();
         }
     }
     
@@ -30,7 +30,7 @@ public class Day_resTest {
         Day_res d = new Day_res(12);
         if (d.translateToInt(time) != 13) {
             System.out.println(d.translateToInt(time));
-            fail("ERROR: STRING WRONGLY TRANSITIONED");
+            fail();
         }
     }
     

@@ -25,8 +25,8 @@ public class Alert {
     }
     
     
-    public void toPrint(){
-        System.out.println("Alert occured in lot " + location + " in parking spot " + parkingSpot);
+    public void toPrint(int i){
+        System.out.println("Alert " + i + " occured in lot " + location + " in parking spot " + parkingSpot);
         if (comment == null) {
             System.out.println("There were no further comments from the user");
         } else {
