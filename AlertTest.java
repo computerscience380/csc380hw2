@@ -14,7 +14,17 @@ import static org.junit.Assert.*;
  */
 public class AlertTest {
     
-    public AlertTest() {
+    @Test
+    public void AlertTest() {
+        String location = "lot 2a";
+        int spot = 7;
+        String location2 = "lot 7c";
+        int spot2 = 26;
+        String comment = "Black SUV that is not supposed to be there";
+        Alert a = new Alert(location, spot, comment);
+        a.toPrint(1);
+        Alert b = new Alert(location2, spot2);
+        b.toPrint(2);
     }
     
     

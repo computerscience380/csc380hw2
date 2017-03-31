@@ -35,6 +35,14 @@ public class Day_res {
         frames[this.translateToInt(time)].addRes(r, time);
     }
 
+    public void displayRes() {
+        for (int i = 0; i < 48; i++) {
+            if (frames[i].hasRes()) {
+                System.out.println(frames[i].toString());
+            }
+        }
+    }
+
     public boolean can_Res(String timeStart, String timeEnd) { //check for conflicting reservation times
         boolean can = true;
         for (int i = this.translateToInt(timeStart); i < this.translateToInt(timeEnd); i++) {

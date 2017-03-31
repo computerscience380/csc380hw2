@@ -17,9 +17,21 @@ public class Parking_Lot {//maybe allow requesting a specific spot? (then check 
     private String parkingLotName;
     private Parking_Spot lot[];
 
+    public void displayRes() {
+        for (int i = 0; i < lot.length; i++) {
+            if (lot[i].c()) {
+                lot[i].update();
+                System.out.println("Parking spot #" + lot[i].getID() + ":");
+                lot[i].displayRes();
+            } else {
+                System.out.println("No reservations in parking spot #" + lot[i].getID());
+            }
+        }
+    }
+
     public void addReservation(Reservation R, int day, String T1) { //only one time slot reservation      
         for (int i = 0; i < lot.length; i++) {
-            if(lot[i].spotsAvailbleAtTimeAndDay(day, T1)){
+            if (lot[i].spotsAvailbleAtTimeAndDay(day, T1)) {
                 lot[i].reserve(R, day, T1);
                 System.out.println("Your reservation has been set at parking spot number " + lot[i].getID() + " from " + T1 + " to " + roundOff(T1) + " on day " + day + " of this month");
                 break;
@@ -29,7 +41,7 @@ public class Parking_Lot {//maybe allow requesting a specific spot? (then check 
 
     public void addReservation(Reservation r, int day, String T1, String T2) { // two or more reservations(will be in a row)
         for (int i = 0; i < lot.length; i++) {
-            if(lot[i].spotsAvailbleAtTimeAndDay(day, T1, T2)){
+            if (lot[i].spotsAvailbleAtTimeAndDay(day, T1, T2)) {
                 lot[i].reserve(r, day, T1, T2);
                 System.out.println("Your reservation has been set at parking spot number " + lot[i].getID() + " from " + T1 + " to " + T2 + " on day " + day + " of this month");
                 break;
@@ -73,15 +85,15 @@ public class Parking_Lot {//maybe allow requesting a specific spot? (then check 
         }
         parkingLotName = lotName;
     }
-    
+
     public static String roundOff(String time) {
         String pattern = "^([1-9]|1[0-2]):([0-5][0-9]) ([APap][mM]$)";
         Pattern r = Pattern.compile(pattern);
         Matcher ma = r.matcher(time);
         if (ma.matches()) {
             int m = Integer.parseInt(ma.group(2));
-            m = m+29;
-            String fin = ma.group(1)+ ":" + m + " " + ma.group(3);
+            m = m + 29;
+            String fin = ma.group(1) + ":" + m + " " + ma.group(3);
             return fin;
         } else {
             System.out.println("ERROR: BAD INPUT");

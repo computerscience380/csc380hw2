@@ -47,10 +47,12 @@ public class Reservation {
     
     @Override
     public String toString(){
-        return  "reserved by: " + name + 
-                " License Plate: " + licensePlate + 
-                " Permit ID: " + permit;
+        return  "     Reserved by: " + name + 
+                "\n     License Plate: " + licensePlate + 
+                "\n     Permit ID: " + permit;
     }
     
     
 }
+//go thru each posibility, ask if has res, if so print it
+//maybe ask for confirmation of given information before reserving in main class

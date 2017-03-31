@@ -25,13 +25,17 @@ public class Day_resTest {
     }
     
     @Test
-    public void testTranslateToInt(){
+    public void displayResTest(){
         String time = "6:30 am";
         Day_res d = new Day_res(12);
-        if (d.translateToInt(time) != 13) {
-            System.out.println(d.translateToInt(time));
-            fail();
-        }
+         String one = "1";
+        String two = "2";
+        int three = 3;
+        Reservation r = new Reservation(one, two, three);
+        
+        d.create_Res(r, time);
+        
+        d.displayRes();
     }
     
     @Test
