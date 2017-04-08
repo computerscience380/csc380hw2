@@ -105,7 +105,7 @@ public class Parking_Spot {
             } 
         }
         if (!c) {
-                System.out.println("   No reservations in this parking spot for this month");
+                System.out.println("   No reservations in this parking spot for this month  ");
         }
     }
 }

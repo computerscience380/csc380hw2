@@ -35,7 +35,7 @@ public class Day_res {
         frames[this.translateToInt(time)].addRes(r, time);
     }
 
-    public void displayRes() {
+        public void displayRes() {
         for (int i = 0; i < 48; i++) {
             if (frames[i].hasRes()) {
                 System.out.println(frames[i].toString());
@@ -59,7 +59,7 @@ public class Day_res {
     }
 
     public void getWhy() {//when the 2 time get res fails, use this to print out all conflicting times
-
+        //maybe get rid of?    if not use to return times that are not reservable within the given time frame (time1  ->  time2) 
     }
 
 //    public void printRes(String time) {
