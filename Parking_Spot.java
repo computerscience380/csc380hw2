@@ -20,7 +20,6 @@ public class Parking_Spot {
 
     public void update() {
         if (!this.getMonth().equals(Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()))) { //check whether is on right month
-            System.out.println("Updating parking spot " + this.getID());
             month = Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
             this.setDays(Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH));
         }
@@ -50,11 +49,7 @@ public class Parking_Spot {
         this.setDays(Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH));
     }
 
-    public void reserve(Reservation r,int d ,String T1) {
-        days[d].create_Res(r, T1);
-    }
-
-    public void reserve(Reservation r,int d ,String T1, String T2) {
+    public void reserve(Reservation r,int d ,int T1, int T2) {
         days[d].create_Res(r, T1, T2);
     }
 
@@ -62,50 +57,11 @@ public class Parking_Spot {
         return spotID;
     }
 
-    public boolean spotsAvailbleAtTimeAndDay(int d, String time) {
-        return days[d].can_Res(time);
-    }
-
-    public boolean spotsAvailbleAtTimeAndDay(int d, String T1, String T2) {
+    public boolean spotsAvailble(int d, int T1, int T2) {
         return days[d].can_Res(T1, T2);
     }
     
-    public boolean c(){
-        for (int i = 0; i < days.length; i++) {
-            if (days[i].can_Res("12:00 am", "11:59 pm")) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
     public void displayRes(){
-        String postFix;
-        boolean c = false;
         
-        
-        System.out.println("  Month: " + this.getMonth());
-        
-        for (int i = 0; i < this.getDays(); i++) {
-            if (days[i].getDay() == 1 || days[i].getDay() == 21 || days[i].getDay() == 31) {
-                postFix = "st";
-            } else if (days[i].getDay() == 2 || days[i].getDay() == 22) {
-                postFix = "nd";
-            } else if (days[i].getDay() == 3 || days[i].getDay() == 23) {
-                postFix = "rd";
-            } else {
-                postFix = "th";
-            }
-            
-            
-            if (!days[i].can_Res("12:00 am", "11:59 pm")) {
-                System.out.println("   The " + days[i].getDay() + postFix);
-                days[i].displayRes();
-                c = true;
-            } 
-        }
-        if (!c) {
-                System.out.println("   No reservations in this parking spot for this month  ");
-        }
     }
 }

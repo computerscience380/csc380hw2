@@ -29,20 +29,21 @@ public class Account {
     }
 
     public String getVariable(String which) {
-        if (which.equalsIgnoreCase("username")) {
-            return username;
-        } else if (which.equalsIgnoreCase("password")) {
-            return password;
-        } else if (which.equalsIgnoreCase("name")) {
-            return name;
-        } else if (which.equalsIgnoreCase("licencePlate")) {
-            return licencePlate;
-        } else if (which.equalsIgnoreCase("ID")) {
-            return ID;
-        } else if (which.equalsIgnoreCase("type")) {
-            return type;
-        } else {
-            return null;
+        switch (which) {
+            case "username":
+                return username;
+            case "password":
+                return password;
+            case "name":
+                return name;
+            case "licenceplate":
+                return licencePlate;
+            case "id":
+                return ID;
+            case "type":
+                return type;
+            default:
+                return null;
         }
     }
 }
