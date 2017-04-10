@@ -26,7 +26,7 @@ public class ConsoleMenu {
         Parking_Lot e = new Parking_Lot(2, "lotA");
         Account a = new Account("a","a","a","a","a","user");//for testing: username is a, password is a
         Account b = new Account("a","a","a","a","a","admin");
-        Account c = new Account("a","a","a","a","a","police");
+        Account c = new Account("a","a","a","a","a","police ");//need to make sure loggin stuff are not the same when creating accounts
         lots.add(e);
         accs.add(a);
         
