@@ -24,14 +24,14 @@ public class Alert {
         location = l;
     }
     
-    
-    public void toPrint(int i){
-        System.out.println("Alert " + i + " occured in lot " + location + " in parking spot " + parkingSpot);
-        if (comment == null) {
-            System.out.println("There were no further comments from the user");
-        } else {
-            System.out.println("The user further added: " + comment);
-        }
+    public String getLocation(){
+        return location;
+    }
+    public int getSpot(){
+        return parkingSpot;
+    }
+    public String getComment(){
+        return comment;
     }
     
     public Alert(String lot, int spot, String comment){

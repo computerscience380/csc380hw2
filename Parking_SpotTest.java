@@ -36,8 +36,25 @@ public class Parking_SpotTest {
         
         if (p.getDays() != Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH)) {
             fail();
-        }
+        }System.out.println("END OF TEST");
+        System.out.println("");
         
+        
+    }
+    
+    
+    @Test
+    public void displayResTest(){
+        Parking_Spot p = new Parking_Spot(4);
+         String one = "1";
+        String two = "2";
+        int three = 3;
+        Reservation r = new Reservation(one, two, three);
+        
+        p.reserve(r, 2, "5:00 am", "2:30 pm");
+        p.displayRes();
+        System.out.println("END OF TEST");
+        System.out.println("");
     }
     
     @Test

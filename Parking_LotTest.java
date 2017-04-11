@@ -17,7 +17,6 @@ public class Parking_LotTest {
     @Test
     public void singleReserveTest() {
         Parking_Lot l = new Parking_Lot(5, "test");
-
         int day = 15;
         String time = "6:30 am";
         String one = "1";
@@ -25,5 +24,32 @@ public class Parking_LotTest {
         int three = 3;
         Reservation r = new Reservation(one, two, three);
         l.addReservation(r, day, time);
+    }
+
+    @Test
+    public void multiReserveTest() {
+        Parking_Lot l = new Parking_Lot(5, "test");
+        int day = 15;
+        String time = "6:30 am";
+        String time2 = "7:30 am";
+        String one = "1";
+        String two = "2";
+        int three = 3;
+        Reservation r = new Reservation(one, two, three);
+        l.addReservation(r, day, time, time2);
+    }
+
+    @Test
+    public void displayRes() {
+        Parking_Lot l = new Parking_Lot(5, "test");
+        int day = 15;
+        String time = "6:30 am";
+        String one = "1";
+        String two = "2";
+        int three = 3;
+        Reservation r = new Reservation(one, two, three);
+        l.addReservation(r, day, time);
+
+        l.displayRes();
     }
 }

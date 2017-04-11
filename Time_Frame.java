@@ -41,4 +41,8 @@ public class Time_Frame {
       res = null;
       this.setTime(null);
     }
+    
+    public String toString(){
+        return "    At time: " + this.getTime() + "\n" + this.getRes().toString();
+    }
 }

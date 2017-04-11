@@ -5,9 +5,6 @@
  */
 package com.mycompany.csc380homework;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  *
  * @author Sean McGrath
@@ -17,27 +14,24 @@ public class Day_res {
     private int day;
     private Time_Frame[] frames;
 
-    public void create_Res(Reservation r, String T1, String T2) {//go from first res to one less than last res like in can_Res(because T2 isnt a res its only a marker for hen reservations stop)
-
-        for (int i = this.translateToInt(T1); i < this.translateToInt(T2); i++) {
+    public void create_Res(Reservation r, int T1, int T2) {//go from first res to one less than last res like in can_Res(because T2 isnt a res its only a marker for hen reservations stop)
+//res[]???
+        for (int i = T1; i < T2; i++) {
             if (!frames[i].hasRes()) {
                 frames[i].addRes(r, unTranslate(i));
             } else {
                 System.out.println("How?, somehow already reserved");
             }
         }
-
-        //print out all the times that are already reserved <- NO that goes in "can res"
-        //return false;
     }
 
-    public void create_Res(Reservation r, String time) {
-        frames[this.translateToInt(time)].addRes(r, time);
+    public void displayRes() {
+        
     }
 
-    public boolean can_Res(String timeStart, String timeEnd) { //check for conflicting reservation times
+    public boolean can_Res(int timeStart, int timeEnd) { //check for conflicting reservation times
         boolean can = true;
-        for (int i = this.translateToInt(timeStart); i < this.translateToInt(timeEnd); i++) {
+        for (int i = timeStart; i < timeEnd ; i++) {
             if (frames[i].hasRes()) {
                 can = false;//can't
                 break;
@@ -45,18 +39,7 @@ public class Day_res {
         }
         return can;
     }
-
-    public boolean can_Res(String time) {
-        return !frames[this.translateToInt(time)].hasRes();
-    }
-
-    public void getWhy() {//when the 2 time get res fails, use this to print out all conflicting times
-
-    }
-
-//    public void printRes(String time) {
-//        System.out.println(frames[this.translateToInt(time)].getRes().toString());
-//    }
+    
     private void setDay(int d) {
         day = d;
     }
@@ -74,7 +57,6 @@ public class Day_res {
         //initialize the time frames here, also set the day number
     }
 
-    //another method to translate the time of a res into a printable time
     private String unTranslate(int i) {
         switch (i) {
             case 0:
@@ -175,181 +157,5 @@ public class Day_res {
                 return "11:30 pm";
         }
         return null;
-    }
-
-    private int translateToInt(String time) {
-        String pattern = "^([1-9]|1[0-2]):([0-5][0-9]) ([APap][mM]$)";
-        Pattern r = Pattern.compile(pattern);
-        Matcher ma = r.matcher(time);
-        if (time.equals("11:59 pm")) {
-            return 48;
-        }
-
-        if (ma.matches()) {
-            String h = ma.group(1);
-            int m = Integer.parseInt(ma.group(2));
-            String period = ma.group(3);
-
-            if (period.equals("AM") || period.equals("am") || period.equals("aM") || period.equals("Am")) { //unfinished, needs more logic updating
-                switch (h) {
-                    case "12":
-                        if (m == 0) {
-                            return 0;
-                        } else {
-                            return 1;
-                        }
-                    case "1":
-                        if (m == 0) {
-                            return 2;
-                        } else {
-                            return 3;
-                        }
-                    case "2":
-                        if (m == 0) {
-                            return 4;
-                        } else {
-                            return 5;
-                        }
-                    case "3":
-                        if (m == 0) {
-                            return 6;
-                        } else {
-                            return 7;
-                        }
-                    case "4":
-                        if (m == 0) {
-                            return 8;
-                        } else {
-                            return 9;
-                        }
-                    case "5":
-                        if (m == 0) {
-                            return 10;
-                        } else {
-                            return 11;
-                        }
-                    case "6":
-                        if (m == 0) {
-                            return 12;
-                        } else {
-                            return 13;
-                        }
-                    case "7":
-                        if (m == 0) {
-                            return 14;
-                        } else {
-                            return 15;
-                        }
-                    case "8":
-                        if (m == 0) {
-                            return 16;
-                        } else {
-                            return 17;
-                        }
-                    case "9":
-                        if (m == 0) {
-                            return 18;
-                        } else {
-                            return 19;
-                        }
-                    case "10":
-                        if (m == 0) {
-                            return 20;
-                        } else {
-                            return 21;
-                        }
-                    case "11":
-                        if (m == 0) {
-                            return 22;
-                        } else {
-                            return 23;
-                        }
-                    default:
-                        System.out.println("UNKNOWN ERROR");
-                        return -1;
-                }
-            } else {
-                switch (h) {
-                    case "12":
-                        if (m == 0) {
-                            return 24;
-                        } else {
-                            return 25;
-                        }
-                    case "1":
-                        if (m == 0) {
-                            return 26;
-                        } else {
-                            return 27;
-                        }
-                    case "2":
-                        if (m == 0) {
-                            return 28;
-                        } else {
-                            return 29;
-                        }
-                    case "3":
-                        if (m == 0) {
-                            return 30;
-                        } else {
-                            return 31;
-                        }
-                    case "4":
-                        if (m == 0) {
-                            return 32;
-                        } else {
-                            return 33;
-                        }
-                    case "5":
-                        if (m == 0) {
-                            return 34;
-                        } else {
-                            return 35;
-                        }
-                    case "6":
-                        if (m == 0) {
-                            return 36;
-                        } else {
-                            return 37;
-                        }
-                    case "7":
-                        if (m == 0) {
-                            return 38;
-                        } else {
-                            return 39;
-                        }
-                    case "8":
-                        if (m == 0) {
-                            return 40;
-                        } else {
-                            return 41;
-                        }
-                    case "9":
-                        if (m == 0) {
-                            return 42;
-                        } else {
-                            return 43;
-                        }
-                    case "10":
-                        if (m == 0) {
-                            return 44;
-                        } else {
-                            return 45;
-                        }
-                    case "11":
-                        if (m == 0) {
-                            return 46;
-                        } else {
-                            return 47;
-                        }
-                    default:
-                        System.out.println("UNKNOWN ERROR");
-                        return -1;
-                }
-            }
-        } else {
-            System.out.println("ERROR: bad input of " + time);
-            return -1;
-        }
     }
 }

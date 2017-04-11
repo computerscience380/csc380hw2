@@ -14,7 +14,7 @@ public class Reservation {
     
     private String licensePlate;
     private String name;
-    private int permit;
+    private String permit;
     
     public String getPlate(){
         return licensePlate;
@@ -23,7 +23,7 @@ public class Reservation {
         return name;
     }
     
-    public int getPermit(){
+    public String getPermit(){
         return permit;
     }
     
@@ -35,11 +35,11 @@ public class Reservation {
         name = n;
     }
     
-    private void setPermit(int p){
+    private void setPermit(String p){
         permit = p;
     }
     
-    public Reservation(String n, String plate, int permitNum){
+    public Reservation(String n, String plate, String permitNum){
        this.setPlate(plate);
        this.setName(n);
        this.setPermit(permitNum); 
@@ -47,10 +47,12 @@ public class Reservation {
     
     @Override
     public String toString(){
-        return  "reserved by: " + name + 
-                " License Plate: " + licensePlate + 
-                " Permit ID: " + permit;
+        return  "     Reserved by: " + name + 
+                "\n     License Plate: " + licensePlate + 
+                "\n     Permit ID: " + permit;
     }
     
     
 }
+//go thru each posibility, ask if has res, if so print it
+//maybe ask for confirmation of given information before reserving in main class
