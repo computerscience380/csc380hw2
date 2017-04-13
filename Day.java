@@ -9,19 +9,17 @@ package com.mycompany.csc380homework;
  *
  * @author Sean McGrath
  */
-public class Day_res {
+public class Day {
 
     private int day;
-    private Time_Frame[] frames;
+    private Time_Frame[] frames;//???
 
     public void create_Res(Reservation r, int T1, int T2) {//go from first res to one less than last res like in can_Res(because T2 isnt a res its only a marker for hen reservations stop)
 //res[]???
         for (int i = T1; i < T2; i++) {
             if (!frames[i].hasRes()) {
                 frames[i].addRes(r, unTranslate(i));
-            } else {
-                System.out.println("How?, somehow already reserved");
-            }
+            } 
         }
     }
 
@@ -48,7 +46,7 @@ public class Day_res {
         return day;
     }
 
-    public Day_res(int day) {
+    public Day(int day) {
         this.frames = new Time_Frame[48];
         this.setDay(day);
         for (int i = 0; i < frames.length; i++) {

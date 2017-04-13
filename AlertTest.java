@@ -22,9 +22,13 @@ public class AlertTest {
         int spot2 = 26;
         String comment = "Black SUV that is not supposed to be there";
         Alert a = new Alert(location, spot, comment);
-        a.toPrint(1);
-        Alert b = new Alert(location2, spot2);
-        b.toPrint(2);
+        if (a.getSpot() != spot && !a.getLocation().equals(location) && !a.getComment().equals(comment)) {
+            fail();
+        }
+        Alert b = new Alert(location2, spot2);        
+        if (b.getSpot() != spot2 && !b.getLocation().equals(location2)) {
+            fail();
+        }
     }
     
     
