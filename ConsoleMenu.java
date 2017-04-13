@@ -7,6 +7,7 @@ package com.mycompany.csc380homework;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+
 /**
  *
  * @author Sean McGrath
@@ -19,17 +20,20 @@ public class ConsoleMenu {
     Printer pr = new Printer();
     KeyIn inp = new KeyIn();
     
+    
 
     public void mainMenu() {
         pr.line();
-        
+
         Parking_Lot e = new Parking_Lot(2, "lotA");
-        Account a = new Account("a","a","a","a","a","user");//for testing: username is a, password is a
-        Account b = new Account("a","a","a","a","a","admin");
-        Account c = new Account("a","a","a","a","a","police ");//need to make sure loggin stuff are not the same when creating accounts
+        Account a = new Account("a", "a", "a", "a", "a", "student");//for testing: username is a, password is a
+        //Account b = new Account("a", "a", "a", "c", "a", "admin");
+        //Account c = new Account("a", "a", "a", "d", "a", "police ");//need to make sure loggin stuff are not the same when creating accounts
         lots.add(e);
         accs.add(a);
-        
+        //accs.add(b);
+       // accs.add(c);
+
         int command;
         pr.menus("main");
         command = inp.intIn();
@@ -54,44 +58,165 @@ public class ConsoleMenu {
         }
     }
 
-    private void displayLotNames() {
-        int counter = 0;
-        for (Parking_Lot lot : lots) {
-            pr.displayLotName(lot.getLotName() , counter);
-        }
-    }
-
-    private void userMenu(Account a) {
+    private void studentMenu(Account a) {
         int command;
-        pr.menus("user");
+        pr.menus("student");
         command = inp.intIn();
         switch (command) {
             case 1: // reserve
                 reserve(a);
-                userMenu(a);
+                studentMenu(a);
                 break;
             case 2:
                 pr.selected("Availability");//check f any spots available
                 available();
-                userMenu(a);
+                studentMenu(a);
                 break;
 
             case 3:   //ask what parking lot and what parking spot, used for when a spot is in misuse and creates an alert that is shown to a cop the next time they login  ALSO ask for an extra comment to be sent to cops  !unwritten!
                 pr.selected("Alert");
                 this.makeAlert(a);
-                userMenu(a);
+                studentMenu(a);
                 break;
             case 4: //account
                 int deleted = accountMenu(a);
-                if (deleted != -1) {userMenu(a);}
+                if (deleted != -1) {
+                    studentMenu(a);
+                }
                 break;
             case 5: //logout
                 pr.selected("Logout");
                 break;
             default:
                 System.out.println("Invalid Selection"); //unexpected input
-                userMenu(a);
+                studentMenu(a);
                 break;
+        }
+    }
+
+    private void adminMenu(Account a) {
+        boolean cont = true;
+        int command;
+        while (cont) {
+            pr.menus("admin");
+            command = inp.intIn();
+            switch (command) {
+                case 1:
+                    pr.selected("Create Lot");
+                case 2:
+                    pr.selected("Remove Lot");
+                case 3:
+                    pr.selected("Display All");
+                case 4:
+                    pr.selected("Check Spot");
+                case 5:
+                    pr.selected("Delete Account");
+                case 6:
+                    pr.selected("Display Lots");
+                case 7:
+                    pr.selected("Remove Reservation");
+                case 8:
+                    pr.selected("Logout");
+                    cont = false;
+                    break;
+                default:
+            }
+
+        }
+    }
+
+    private void policeMenu(Account a) {
+        int command;
+        //add alerts as a checkAlerts method here
+        this.checkAlerts();//make
+
+        pr.menus("police");
+        command = inp.intIn();
+        switch (command) {
+            case 1:
+                pr.selected("Display All");
+
+                policeMenu(a);
+                break;
+            case 2:
+                pr.selected("Check Spot");
+
+                policeMenu(a);
+                break;
+            case 3:
+                pr.selected("Logout");
+                break;
+            default:
+                pr.error("invalid input");
+                policeMenu(a);
+                break;
+        }
+    }
+
+    private int accountMenu(Account a) {
+        pr.menus("account");
+        int command = inp.intIn();
+        switch (command) {
+            case 1:
+                pr.selected("Change");
+                accountMenu(this.accChange);//do
+                break;
+            case 2:
+                pr.selected("Information");
+                this.accsInfo(a);
+                break;
+            case 3:
+                pr.selected("Delete");
+                if (accsDel(a)) {
+                    pr.acc("y");
+                    return -1;
+                } else {
+                    pr.acc("n");
+                    accountMenu(a);
+                    break;
+                }
+            case 4:
+                pr.selected("Back");
+                break;
+            default:
+                pr.error("invalid input");
+                accountMenu(a);
+                break;
+        }
+        return 0;
+    }
+
+    private void loggin() {
+        String user;
+        String pass;
+        pr.ask("username");
+        user = inp.strIn();
+        pr.ask("password");
+        pass = inp.strIn();
+
+        int auth = authorize(user, pass);
+        if (auth > -1) {
+            pr.outln("Login sucessful");
+            switch (accs.get(auth).getVariable("type")) {
+                case "student":
+                    studentMenu(accs.get(auth));
+                    break;
+                case "admin":
+                    adminMenu(accs.get(auth));
+                    break;
+                case "police":
+                    policeMenu(accs.get(auth));
+                    break;
+            }
+        } else {
+            pr.error("invalid username or password");
+        }
+    }
+
+    private void displayLotNames() {
+        int counter = 0;
+        for (Parking_Lot lot : lots) {
+            pr.displayLotName(lot.getLotName(), counter);
         }
     }
 
@@ -114,10 +239,10 @@ public class ConsoleMenu {
         }
     }
 
-    private Reservation[] getRes(){
-        
+    private Reservation[] getRes() {
+
     }
-    
+
     private void reserve(Account a) {
         if (!lots.isEmpty()) {
             pr.selected("Reserve");
@@ -226,65 +351,6 @@ public class ConsoleMenu {
         }
     }
 
-    private void adminMenu(Account a) {
-        boolean cont = true;
-        int command;
-        while (cont) {
-            pr.menus("admin");
-            command = inp.intIn();
-            switch (command) {
-                case 1:
-                    pr.selected("Create Lot");
-                case 2:
-                    pr.selected("Remove Lot");
-                case 3:
-                    pr.selected("Display All");
-                case 4:
-                    pr.selected("Check Spot");
-                case 5:
-                    pr.selected("Delete Account");
-                case 6:
-                    pr.selected("Display Lots");
-                case 7:
-                    pr.selected("Remove Reservation");
-                case 8:
-                    pr.selected("Logout");
-                    cont = false;
-                    break;
-                default:
-            }
-
-        }
-    }
-
-    private void policeMenu(Account a) {
-        int command;
-        //add alerts as a checkAlerts method here
-        this.checkAlerts();//make
-
-        pr.menus("police");
-        command = inp.intIn();
-        switch (command) {
-            case 1:
-                pr.selected("Display All");
-
-                policeMenu();
-                break;
-            case 2:
-                pr.selected("Check Spot");
-
-                policeMenu();
-                break;
-            case 3:
-                pr.selected("Logout");
-                break;
-            default:
-                pr.error("invalid input");
-                policeMenu();
-                break;
-        }
-    }
-
     public static boolean validateDay(int d) { //make sure day given is valid
         return d > 0 && d <= Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH); /////////////////
     }
@@ -310,64 +376,15 @@ public class ConsoleMenu {
         return false;
     }
 
-    private void loggin() {
-        String user;
-        String pass;
-        pr.ask("username");
-        user = inp.strIn();
-        pr.ask("password");
-        pass = inp.strIn();
-        
-        int auth = authorize(user, pass);
-        if (auth > -1) {
-            pr.out("Login sucessful");
-            switch (accs.get(auth).getVariable("type")) {
-                case "user":
-                    userMenu(accs.get(auth));
-                    break;
-                case "admin":
-                    adminMenu(accs.get(auth));
-                    break;
-                case "police":
-                    policeMenu(accs.get(auth));
-                    break;
-            }
-        } else {
-            pr.error("invalid username or password");
-        }
-    }
-
-    private int accountMenu(Account a) {
-        pr.menus("account");
-        int command = inp.intIn();
-        switch (command) {
-            case 1:
-                pr.selected("Change");
-                accountMenu(this.accChange);//do
-                break;
-            case 2:
-                pr.selected("Information");
-                this.accsInfo;
-                break;
-            case 3:
-                pr.selected("Delete");
-                if (accsDel(a)) {
-                    pr.acc("y");
-                    return -1;
-                } else {
-                    pr.acc("n");
-                    accountMenu(a);
-                    break;
-                }
-            case 4:
-                pr.selected("Back");
-                break;
-            default:
-                pr.error("invalid input");
-                accountMenu(a);
-                break;
-        }
-        return 0;
+    private void accsInfo(Account a) {
+        pr.out("Name: ");
+        pr.outln(a.getVariable("name"));
+        pr.out("Licence plate: ");
+        pr.outln(a.getVariable("licenceplate"));
+        pr.out("Permit: ");
+        pr.outln(a.getVariable("id"));
+        pr.out("Account Authority: ");
+        pr.outln(a.getVariable("type"));
     }
 
     private boolean accsDel(Account a) {
@@ -393,7 +410,7 @@ public class ConsoleMenu {
         String t;
         int type = askType();
         if (type == 1) {
-            t = "user";
+            t = "student";
         } else if (type == 2) {
             t = "admin";
         } else {
@@ -403,33 +420,33 @@ public class ConsoleMenu {
         Account ac = new Account(user, pass, name, licencePlate, permit, t);
         accs.add(ac);
     }
-    
-    private String askName(){
+
+    private String askName() {
         pr.ask("name");
         return inp.strIn();
     }
-    
-    private String askLP(){
+
+    private String askLP() {
         pr.ask("licenceplate");
         return inp.strIn();
     }
-    
-    private String askID(){
+
+    private String askID() {
         pr.ask("permit");
         return inp.strIn();
     }
-    
+
     private String askUser() {
         pr.ask("username");
         return inp.strIn();
     }
-    
-    private String askPass(){
+
+    private String askPass() {
         pr.ask("password");
         return inp.strIn();
     }
-    
-    private int askType(){
+
+    private int askType() {
         pr.ask("type");
         int type = inp.intIn();
         if (type < 0 || type > 3) {
@@ -437,7 +454,7 @@ public class ConsoleMenu {
             return askType();
         } else {
             return type;
-        }    
+        }
     }
 
     private int authorize(String username, String password) {

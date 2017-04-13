@@ -45,10 +45,10 @@ public class Printer {
                         + "|        9. Logout              | \n"
                         + "================================= ");
                 break;
-            case "user":
+            case "student":
                 this.line();
                 System.out.println(
-                        "|           USER MENU           | \n"
+                        "|           STUDENT MENU          | \n"
                         + "================================= \n"
                         + "| Options:                      | \n"
                         + "|        1. Reserve             | \n"
@@ -86,6 +86,16 @@ public class Printer {
 
     public void displayLotName(String prompt, int i) {
         System.out.println(i + 1 + ". " + prompt);
+    }
+    
+    public void diplayRes(Reservation[] r){
+        for (int i = 0; i < r.length; i++) {
+            r[i].toString();//???
+        }
+    }
+    
+    public void displaySingleRes(Reservation r){
+        r.toString();//do i need this
     }
 
     public void alert(int many) {
@@ -216,7 +226,7 @@ public class Printer {
             case "type":
                 this.line();
                 System.out.println("Select user type: \n"
-                        + "1. User \n"
+                        + "1. Student \n"
                         + "2. Admin \n"
                         + "3. Police \n");
                 break;
@@ -226,8 +236,12 @@ public class Printer {
         }
     }
 
-    public void out(String prompt) {
+    public void outln(String prompt) {
         System.out.println(prompt);
+    }
+    
+    public void out(String prompt){
+        System.out.print(prompt);
     }
 
     public void error(String prompt) {

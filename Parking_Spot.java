@@ -16,7 +16,7 @@ public class Parking_Spot {
 
     private final int spotID;
     private String month;
-    public Day_res days[];
+    public Day days[];
 
     public void update() {
         if (!this.getMonth().equals(Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()))) { //check whether is on right month
@@ -30,11 +30,11 @@ public class Parking_Spot {
     }
 
     private void setDays(int d) {
-        days = new Day_res[d];
-        Day_res temp;
+        days = new Day[d];
+        Day temp;
         
         for (int i = 0; i < d; i++) {//initialize all days
-            temp = new Day_res(i+1);
+            temp = new Day(i+1);
             days[i] = temp;
         }
     }
@@ -49,7 +49,9 @@ public class Parking_Spot {
         this.setDays(Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH));
     }
 
-    public void reserve(Reservation r,int d ,int T1, int T2) {
+    public void reserve(Reservation r,int d ,int T1, int T2, int spot) {
+        r.setSpot(spot);
+        r.setDay(d);
         days[d].create_Res(r, T1, T2);
     }
 
