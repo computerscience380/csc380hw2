@@ -11,21 +11,23 @@ package com.mycompany.csc380homework;
  */
 public class Account {
 
-    private String username;
-    private String password;
-    private String type;
+    private final String accountID;
+    private final String username;
+    private final String password;
+    private final String type;
 
-    private String name;
-    private String licencePlate;
-    private String ID;
+    private final String name;
+    private final String licencePlate;
+    private final String ID;
 
-    public Account(String user, String pass, String n, String lp, String i, String t) {
+    public Account(String user, String pass, String n, String lp, String i, String t, String accid) {
         username = user;
         password = pass;
         name = n;
         licencePlate = lp;
         ID = i;
         type = t;
+        accountID = accid;
     }
 
     public String getVariable(String which) {
@@ -42,6 +44,8 @@ public class Account {
                 return ID;
             case "type":
                 return type;
+            case "accountid":
+                return accountID;
             default:
                 return null;
         }

@@ -7,6 +7,7 @@ package com.mycompany.csc380homework;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.UUID;
 
 /**
  *
@@ -14,45 +15,33 @@ import java.util.Calendar;
  */
 public class ConsoleMenu {
 
-    ArrayList<Parking_Lot> lots = new ArrayList(); //parking lot arrayList
-    ArrayList<Alert> alerts = new ArrayList();//police alerts
-    ArrayList<Account> accs = new ArrayList();//accounts
-    Printer pr = new Printer();
-    KeyIn inp = new KeyIn();
-    
-    
+    private ArrayList<Parking_Lot> lots = new ArrayList();
+    private ArrayList<Alert> alerts = new ArrayList();
+    private ArrayList<Account> accs = new ArrayList();
+    private final Printer pr = new Printer();
+    private final KeyIn inp = new KeyIn();
 
     public void mainMenu() {
         pr.line();
-
-        Parking_Lot e = new Parking_Lot(2, "lotA");
-        Account a = new Account("a", "a", "a", "a", "a", "student");//for testing: username is a, password is a
-        //Account b = new Account("a", "a", "a", "c", "a", "admin");
-        //Account c = new Account("a", "a", "a", "d", "a", "police ");//need to make sure loggin stuff are not the same when creating accounts
-        lots.add(e);
-        accs.add(a);
-        //accs.add(b);
-       // accs.add(c);
-
         int command;
         pr.menus("main");
         command = inp.intIn();
         switch (command) {
             case 1:
-                pr.selected("Login");
+                pr.outln("Login Selected");
                 loggin();
                 mainMenu();
                 break;
             case 2:
-                pr.selected("Create Account");
+                pr.outln("Create Account Selected");
                 accCreation();
                 mainMenu();
                 break;
             case 3:
-                pr.selected("Exit");
+                pr.outln("Exit Selected");
                 break;
             default:
-                pr.error("invalid input");
+                pr.outln("ERROR: invalid input");
                 mainMenu();
                 break;
         }
@@ -63,127 +52,173 @@ public class ConsoleMenu {
         pr.menus("student");
         command = inp.intIn();
         switch (command) {
-            case 1: // reserve
+            case 1:
+                pr.outln("Reserve Selected");
                 reserve(a);
                 studentMenu(a);
                 break;
             case 2:
-                pr.selected("Availability");//check f any spots available
+                pr.outln("Availability Selected");
                 available();
                 studentMenu(a);
                 break;
 
-            case 3:   //ask what parking lot and what parking spot, used for when a spot is in misuse and creates an alert that is shown to a cop the next time they login  ALSO ask for an extra comment to be sent to cops  !unwritten!
-                pr.selected("Alert");
-                this.makeAlert(a);
+            case 3:
+                pr.outln("Alert Selected");
+                String location = askWhatString("location");
+                int parkingSpot = askWhatInt("alertspot");
+                if (askWhatInt("wantcomment") == 1) {
+                    String comment = askWhatString("comment");
+                    Alert al = new Alert(location, parkingSpot, comment);
+                    alerts.add(al);
+                } else {
+                    Alert al = new Alert(location, parkingSpot);
+                    alerts.add(al);
+                }
                 studentMenu(a);
                 break;
-            case 4: //account
-                int deleted = accountMenu(a);
-                if (deleted != -1) {
-                    studentMenu(a);
+            case 4:
+                pr.outln("Account Selected");
+                Account b = accountMenu(a);
+                if (b != null) {
+                    studentMenu(b);
                 }
                 break;
-            case 5: //logout
-                pr.selected("Logout");
+            case 5:
+                pr.outln("Logout Selected");
                 break;
             default:
-                System.out.println("Invalid Selection"); //unexpected input
+                System.out.println("Invalid Selection");
                 studentMenu(a);
                 break;
         }
     }
 
     private void adminMenu(Account a) {
-        boolean cont = true;
         int command;
-        while (cont) {
-            pr.menus("admin");
-            command = inp.intIn();
-            switch (command) {
-                case 1:
-                    pr.selected("Create Lot");
-                case 2:
-                    pr.selected("Remove Lot");
-                case 3:
-                    pr.selected("Display All");
-                case 4:
-                    pr.selected("Check Spot");
-                case 5:
-                    pr.selected("Delete Account");
-                case 6:
-                    pr.selected("Display Lots");
-                case 7:
-                    pr.selected("Remove Reservation");
-                case 8:
-                    pr.selected("Logout");
-                    cont = false;
-                    break;
-                default:
-            }
-
+        pr.menus("admin");
+        command = inp.intIn();
+        switch (command) {
+            case 1:
+                pr.outln("Create Lot Selected");
+                String lotname = askWhatString("lotname");
+                int spots = askWhatInt("spots");
+                Parking_Lot lot = new Parking_Lot(spots, lotname);
+                lots.add(lot);
+                pr.outln("Lot " + lotname + " added.");
+                pr.line();
+                adminMenu(a);
+                break;
+            case 2:
+                pr.outln("Remove Lot Selected");
+                if (!lots.isEmpty()) {
+                    int lname = askWhatInt("lot");
+                    pr.outln("Lot " + lots.get(lname).getLotName() + " removed");
+                    lots.remove(lname);
+                    pr.line();
+                } else {
+                    pr.outln("ERROR: no parking lots");
+                }
+                adminMenu(a);
+                break;
+            case 3:
+                pr.outln("Display All Selected");
+                displayRes();
+                adminMenu(a);
+                break;
+            case 4:
+                pr.outln("Check Spot Selected");
+                this.checkSpot;
+                adminMenu(a);
+                break;
+            case 5:
+                pr.outln("Display Lots Selected");
+                displayLotNames();
+                adminMenu(a);
+                break;
+            case 6:
+                pr.outln("Account Selected");
+                Account b = accountMenu(a);
+                if (b != null) {
+                    pr.line();
+                    adminMenu(b);
+                }
+                break;
+            case 7:
+                pr.outln("Logout Selected");
+                break;
+            default:
+                pr.outln("ERROR: invalid input");
+                adminMenu(a);
+                break;
         }
     }
 
     private void policeMenu(Account a) {
         int command;
-        //add alerts as a checkAlerts method here
-        this.checkAlerts();//make
-
+        checkAlerts();
         pr.menus("police");
         command = inp.intIn();
         switch (command) {
             case 1:
-                pr.selected("Display All");
-
+                pr.outln("Display All Selected");
+                displayRes();
                 policeMenu(a);
                 break;
             case 2:
-                pr.selected("Check Spot");
-
+                pr.outln("Check Spot Selected");
+                this.checkSpot();
                 policeMenu(a);
                 break;
             case 3:
-                pr.selected("Logout");
+                pr.outln("Account Selected");
+                Account b = accountMenu(a);
+                if (b != null) {
+                    policeMenu(b);
+                }
+                break;
+            case 4:
+                pr.outln("Logout Selected");
                 break;
             default:
-                pr.error("invalid input");
+                pr.outln("ERROR: invalid input");
                 policeMenu(a);
                 break;
         }
     }
 
-    private int accountMenu(Account a) {
+    private Account accountMenu(Account a) {
         pr.menus("account");
         int command = inp.intIn();
         switch (command) {
             case 1:
-                pr.selected("Change");
-                accountMenu(this.accChange);//do
+                pr.outln("Change Selected");
+                accountMenu(accChange(a));//do, return an account b with the changed variables
                 break;
             case 2:
-                pr.selected("Information");
-                this.accsInfo(a);
+                pr.outln("Information Selected");
+                accInfo(a);
+                accountMenu(a);
                 break;
             case 3:
-                pr.selected("Delete");
-                if (accsDel(a)) {
+                pr.outln("Delete Selected");
+                if (accDel(a)) {
                     pr.acc("y");
-                    return -1;
+                    return null;
                 } else {
                     pr.acc("n");
                     accountMenu(a);
                     break;
                 }
             case 4:
-                pr.selected("Back");
+                pr.outln("Back Selected");
                 break;
             default:
-                pr.error("invalid input");
+                pr.outln("ERROR: invalid input");
                 accountMenu(a);
                 break;
         }
-        return 0;
+        return a;
     }
 
     private void loggin() {
@@ -209,26 +244,29 @@ public class ConsoleMenu {
                     break;
             }
         } else {
-            pr.error("invalid username or password");
+            pr.outln("ERROR: invalid username or password");
         }
     }
 
     private void displayLotNames() {
-        int counter = 0;
-        for (Parking_Lot lot : lots) {
-            pr.displayLotName(lot.getLotName(), counter);
+        if (!lots.isEmpty()) {
+            int counter = 0;
+            for (Parking_Lot lot : lots) {
+                pr.displayLotName(lot.getLotName(), counter);
+                counter++;
+            }
+        } else {
+            pr.outln("ERROR: no parking lots");
         }
     }
 
     private void available() {
-        int lot = this.askLot();
-        int day = this.askDay();
+        int lot = this.askWhatInt("lot");
+        int day = this.askWhatInt("day");
         int startTime = this.askTime(1);
         int endTime = this.askTime(2);
-        System.out.println(endTime);
-        System.out.println(startTime);
         if (endTime <= startTime) {
-            pr.error("second time is before or the same as the first time");
+            pr.outln("ERROR: second time is before or the same as the first time");
             available();
         } else {//attempt reserve
             if (lots.get(lot).spotsAvailble(day, startTime, endTime)) {//check if any spots are available(if not error if so reserve)
@@ -239,61 +277,80 @@ public class ConsoleMenu {
         }
     }
 
-    private Reservation[] getRes() {
+    private void displayRes() {
+        if (lots.isEmpty()) {
+            pr.outln("ERROR: no parking lots");
+        } else {
+            boolean cont = true;
+            int count = 0;
+            for (Parking_Lot lot : lots) {
+                if (lot.hasReservations()) {
+                    count++;
+                }
+            }
+            if (count == 0) {
+                cont = false;
+            }
+
+            if (cont) {
+                for (Parking_Lot lot : lots) {
+                    if (lot.hasReservations()) {
+                        pr.outln("");
+                        pr.outln("----Parking lot '" + lot.getLotName() + "': ");
+                        Parking_Spot[] spots = lot.getSpots();
+                        for (Parking_Spot spot : spots) {
+                            if (spot.hasReservations()) {
+                                pr.outln("---Spot #" + spot.getID());
+                                Day[] days = spot.getDays();
+                                for (Day day : days) {
+                                    if (day.hasReservations()) {
+                                        pr.outln("--On the " + day.getDay() + pr.postfix(day.getDay()));
+                                        Time_Frame[] frames = day.getFrames();
+                                        pr.printReservations(frames);
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        pr.outln("Lot " + lot.getLotName() + " has no reservations");
+                    }
+                }
+            } else {
+                pr.outln("There are no reservations in any parking lots");
+            }
+        }
+    }
+
+    private void checkSpot(int lot, int spot) {
 
     }
 
     private void reserve(Account a) {
         if (!lots.isEmpty()) {
-            pr.selected("Reserve");
             boolean redo;
             int startTime;
             int endTime;
-            int lot = this.askLot();
-            int day = this.askDay();
+            int lot = this.askWhatInt("lot");
+            int day = this.askWhatInt("day");
             do {
                 redo = false;
                 startTime = this.askTime(1);
                 endTime = this.askTime(2);
                 if (endTime <= startTime) {
-                    pr.error("second time is before or the same as the first time");
+                    pr.outln("ERROR: second time is before or the same as the first time");
                     redo = true;
-                } else {//attempt reserve
-                    if (lots.get(lot).spotsAvailble(day, startTime, endTime)) {//check if any spots are available(if not error if so reserve)
-                        Reservation r = new Reservation(a.getVariable("name"), a.getVariable("licenceplate"), a.getVariable("id"));
-                        int spot = lots.get(lot).addReservation(r, day, startTime, endTime);
+                } else {
+                    if (lots.get(lot).spotsAvailble(day, startTime, endTime)) {
+                        Reservation r = new Reservation(a);
+                        int spot = lots.get(lot).reserve(r, day, startTime, endTime);
                         pr.havRes(day, startTime, endTime, spot);
                     } else {
-                        pr.error("no spots available during requested time frame");
+                        pr.outln("ERROR: no spots available for requested time frame");
                     }
                 }
             } while (redo);
         } else {
-            pr.error("no parking lots");
-        }
-    }
-
-    private int askLot() {
-        pr.ask("lot");
-        this.displayLotNames();//do this
-        int lot = inp.intIn() - 1;
-        if (lot > lots.size() || lot < 0) {
-            pr.error("invalid input");
-            return askLot();
-        } else {
-            return lot;
-        }
-    }
-
-    private int askDay() {
-        int day;
-        pr.ask("day");
-        day = inp.intIn();
-        if (validateDay(day)) {
-            return day;
-        } else {
-            pr.error("day entered does not exist");
-            return askDay();
+            pr.outln("ERROR: no parking lots");
         }
     }
 
@@ -307,7 +364,7 @@ public class ConsoleMenu {
                 if (t1 > 0 && t1 <= 24) {
                     return t1 - 1;
                 } else {
-                    pr.error("invalid input");
+                    pr.outln("ERROR: invalid input");
                     return askTime(1);
                 }
             } else if (period == 2) {//pm
@@ -316,11 +373,11 @@ public class ConsoleMenu {
                 if (t1 > 0 && t1 <= 24) {
                     return t1 + 23;
                 } else {
-                    pr.error("invalid input");
+                    pr.outln("ERROR: invalid input");
                     return askTime(1);
                 }
             } else {
-                pr.error("invalid input");
+                pr.outln("ERROR: invalid input");
                 return askTime(1);
             }
         } else {//end
@@ -332,7 +389,7 @@ public class ConsoleMenu {
                 if (t1 > 0 && t1 <= 24) {
                     return t1;
                 } else {
-                    pr.error("invalid input");
+                    pr.outln("ERROR: invalid input");
                     return askTime(2);
                 }
             } else if (period == 2) {//pm
@@ -341,18 +398,14 @@ public class ConsoleMenu {
                 if (t1 > 0 && t1 <= 24) {
                     return t1 + 24;
                 } else {
-                    pr.error("invalid input");
+                    pr.outln("ERROR: invalid input");
                     return askTime(2);
                 }
             } else {
-                pr.error("invalid input");
+                pr.outln("ERROR: invalid input");
                 return askTime(2);
             }
         }
-    }
-
-    public static boolean validateDay(int d) { //make sure day given is valid
-        return d > 0 && d <= Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH); /////////////////
     }
 
     private void checkAlerts() {
@@ -363,20 +416,20 @@ public class ConsoleMenu {
             if (response == 1) {
                 int c = 1;
                 for (Alert i : alerts) {
-                    i.toPrint(c);//change to printer class
-                    alerts.remove(i);
+                    pr.printAlert(i, c);
                     c++;
                 }
-
+                alerts.clear();
+            } else if (response == 2) {
+                pr.outln("continuing to menu");
+            } else {
+                pr.outln("ERROR: invalid input");
+                checkAlerts();
             }
         }
     }
 
-    private boolean maxRes() {//maybe not? should there be a cap to reservations
-        return false;
-    }
-
-    private void accsInfo(Account a) {
+    private void accInfo(Account a) {
         pr.out("Name: ");
         pr.outln(a.getVariable("name"));
         pr.out("Licence plate: ");
@@ -387,7 +440,7 @@ public class ConsoleMenu {
         pr.outln(a.getVariable("type"));
     }
 
-    private boolean accsDel(Account a) {
+    private boolean accDel(Account a) {
         pr.ask("accdel");//
         int choice = inp.intIn();
         if (choice == 1) {
@@ -396,19 +449,19 @@ public class ConsoleMenu {
         } else if (choice == 2) {
             return false;
         } else {
-            pr.error("invalid input");
-            return accsDel(a);
+            pr.outln("ERROR: invalid input");
+            return accDel(a);
         }
     }
 
     private void accCreation() {
-        String name = askName();
-        String licencePlate = askLP();
-        String permit = askID();
-        String user = askUser();
-        String pass = askPass();
+        String name = askWhatString("name");
+        String licencePlate = askWhatString("licenceplate");
+        String permit = askWhatString("permit");
+        String user = askWhatString("username");
+        String pass = askWhatString("password");
         String t;
-        int type = askType();
+        int type = askWhatInt("type");
         if (type == 1) {
             t = "student";
         } else if (type == 2) {
@@ -417,44 +470,111 @@ public class ConsoleMenu {
             t = "police";
         }
 
-        Account ac = new Account(user, pass, name, licencePlate, permit, t);
+        Account ac = new Account(user, pass, name, licencePlate, permit, t, UUID.randomUUID().toString());
         accs.add(ac);
     }
 
-    private String askName() {
-        pr.ask("name");
-        return inp.strIn();
-    }
-
-    private String askLP() {
-        pr.ask("licenceplate");
-        return inp.strIn();
-    }
-
-    private String askID() {
-        pr.ask("permit");
-        return inp.strIn();
-    }
-
-    private String askUser() {
-        pr.ask("username");
-        return inp.strIn();
-    }
-
-    private String askPass() {
-        pr.ask("password");
-        return inp.strIn();
-    }
-
-    private int askType() {
-        pr.ask("type");
-        int type = inp.intIn();
-        if (type < 0 || type > 3) {
-            pr.error("invalid input");
-            return askType();
-        } else {
-            return type;
+    private String askWhatString(String what) {
+        switch (what) {
+            case "comment":
+                pr.outln("Enter comment:");
+                return inp.strIn();
+            case "location":
+                pr.outln("Where is this occuring");
+                return inp.strIn();
+            case "name":
+                pr.ask("name");
+                return inp.strIn();
+            case "licenceplate":
+                pr.ask("licenceplate");
+                return inp.strIn();
+            case "permit":
+                pr.ask("permit");
+                return inp.strIn();
+            case "username":
+                pr.ask("username");
+                String temp = inp.strIn();
+                for (Account acc : accs) {
+                    if (acc.getVariable("username").equalsIgnoreCase(temp)) {
+                        pr.outln("ERROR: given username is already in use");
+                        return askWhatString("username");
+                    }
+                }
+                if (temp == null) {
+                    System.out.println("NULL!@!@!");
+                }
+                return temp;
+            case "password":
+                pr.ask("password");
+                return inp.strIn();
+            case "lotname":
+                pr.ask("lotname");
+                return inp.strIn();
         }
+        return null;
+    }
+
+    private int askWhatInt(String what) {
+        switch (what) {
+            case "wantcomment":
+                pr.outln("Do you want to add a comment?");
+                pr.ask("yn");
+                int answer = inp.intIn();
+                if (answer <= 0 || answer > 2) {
+                    pr.outln("ERROR: invalid input");
+                    return askWhatInt("wantcomment");
+                } else {
+                    return answer;
+                }
+            case "alertspot":
+                pr.outln("What parking spot is this occuring in");
+                int spot = inp.intIn();
+                if (spot <= 0) {
+                    pr.outln("ERROR: invalid input");
+                    return askWhatInt("alertspot");
+                } else {
+                    return spot;
+                }
+            case "type":
+                pr.ask("type");
+                int type = inp.intIn();
+                if (type < 0 || type > 3) {
+                    pr.outln("ERROR: invalid input");
+                    return askWhatInt("type");
+                } else {
+                    return type;
+                }
+            case "day":
+                int day;
+                pr.ask("day");
+                day = inp.intIn();
+                if (validateDay(day)) {
+                    return day;
+                } else {
+                    pr.outln("ERROR: day entered does not exist");
+                    return askWhatInt("day");
+                }
+            case "lot":
+                pr.outln("Choose lot: ");
+                displayLotNames();
+                int lot = inp.intIn();
+                if (lot > lots.size() || lot < 0) {
+                    pr.outln("ERROR: invalid input");
+                    return askWhatInt("lot");
+                } else {
+                    return lot - 1;
+                }
+            case "spots":
+                pr.ask("spots");
+                int spots = inp.intIn();
+                if (spots <= 0) {
+                    pr.outln("ERROR: invalid input");
+                    return askWhatInt("spots");
+                } else {
+                    return spots;
+                }
+        }
+        return -1;
     }
 
     private int authorize(String username, String password) {
@@ -465,4 +585,9 @@ public class ConsoleMenu {
         }
         return -1;
     }
+
+    private static boolean validateDay(int d) { //make sure day given is valid
+        return d > 0 && d <= Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH); /////////////////
+    }
+
 }

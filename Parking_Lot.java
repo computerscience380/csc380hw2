@@ -18,16 +18,20 @@ public class Parking_Lot {//maybe allow requesting a specific spot? (then check 
         //
     }
 
-    public int addReservation(Reservation r, int day, int T1, int T2) { // two or more reservations(will be in a row)
+    public int reserve(Reservation r, int day, int T1, int T2) { // two or more reservations(will be in a row)
         for (int i = 0; i < lot.length; i++) {
             if (lot[i].spotsAvailble(day, T1, T2)) {
-                lot[i].reserve(r, day, T1, T2);
+                lot[i].reserve(r, day, T1, T2, lot[i].getID());
                 return lot[i].getID();
             }
         }
         return -1;
     }
-
+    
+    public Parking_Spot[] getSpots(){
+        return lot;
+    }
+    
     public String getLotName() {
         return parkingLotName;
     }
@@ -52,5 +56,14 @@ public class Parking_Lot {//maybe allow requesting a specific spot? (then check 
             lot[i] = p;
         }
         parkingLotName = lotName;
+    }
+    
+    public boolean hasReservations(){
+        for(Parking_Spot spot: lot){
+            if (spot.hasReservations()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

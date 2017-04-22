@@ -18,15 +18,15 @@ public class ReservationTest {
     public void setVariablesTest(){
         String one = "1";
         String two = "2";
-        int three = 3;
+        String three = "3";
         Reservation r = new Reservation(one,two,three);
-        if (!r.getName().equals(one)) {
+        if (r.getName() == null ? one != null : !r.getName().equals(one)) {
             fail("ERROR: Name not added");
         }
-        if (!r.getPlate().equals(two)) {
+        if (r.getPlate() == null ? two != null : !r.getPlate().equals(two)) {
             fail("ERROR: Plate not added");
         }
-        if (r.getPermit() != three) {
+        if (r.getPermit() == null ? three != null : !r.getPermit().equals(three)) {
             fail("ERROR: permit not added");
         }
         

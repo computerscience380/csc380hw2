@@ -15,41 +15,18 @@ import org.junit.Test;
 public class Parking_LotTest {
 
     @Test
-    public void singleReserveTest() {
+    public void reserveTest() {
         Parking_Lot l = new Parking_Lot(5, "test");
         int day = 15;
-        String time = "6:30 am";
+        int time = 1;
+        int time2 = 4;
         String one = "1";
         String two = "2";
-        int three = 3;
+        String three = "3";
         Reservation r = new Reservation(one, two, three);
-        l.addReservation(r, day, time);
-    }
-
-    @Test
-    public void multiReserveTest() {
-        Parking_Lot l = new Parking_Lot(5, "test");
-        int day = 15;
-        String time = "6:30 am";
-        String time2 = "7:30 am";
-        String one = "1";
-        String two = "2";
-        int three = 3;
-        Reservation r = new Reservation(one, two, three);
-        l.addReservation(r, day, time, time2);
-    }
-
-    @Test
-    public void displayRes() {
-        Parking_Lot l = new Parking_Lot(5, "test");
-        int day = 15;
-        String time = "6:30 am";
-        String one = "1";
-        String two = "2";
-        int three = 3;
-        Reservation r = new Reservation(one, two, three);
-        l.addReservation(r, day, time);
-
-        l.displayRes();
+        Reservation r = l.reserve(r, day, time, time2);
+        
+        
+        //check for existance of r
     }
 }

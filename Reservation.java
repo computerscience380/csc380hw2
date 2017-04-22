@@ -11,34 +11,24 @@ package com.mycompany.csc380homework;
  */
 public class Reservation {
 
-    private String licensePlate;
-    private String name;
-    private String permit;
+    private Account account;
     private int spot;
     private int day;
 
-    public String getPlate() {
-        return licensePlate;
+    public Account getAccount(){
+        return account;
+    }
+    
+    public int getSpot(){
+        return spot;
+    }
+    
+    public int getDay(){
+        return day;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getPermit() {
-        return permit;
-    }
-
-    private void setPlate(String pl) {
-        licensePlate = pl;
-    }
-
-    private void setName(String n) {
-        name = n;
-    }
-
-    private void setPermit(String p) {
-        permit = p;
+    private void setAccount(Account a) {
+        account = a;
     }
 
     public void setSpot(int s) {
@@ -61,21 +51,9 @@ public class Reservation {
         }
     }
 
-    public Reservation(String n, String plate, String permitNum) {
-        setPlate(plate);
-        setName(n);
-        setPermit(permitNum);
+    public Reservation(Account a) {
+        setAccount(a);
     }
-
-    @Override
-    public String toString() {
-        return "Parking spot #: " + spot
-                + "\n Reserved by: " + name
-                + "\n On the: " + day + postfix(day)
-                + "\n License Plate: " + licensePlate
-                + "\n Permit ID: " + permit;
-    }
-
 }
 //go thru each posibility, ask if has res, if so print it
 //maybe ask for confirmation of given information before reserving in main class
