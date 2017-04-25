@@ -48,19 +48,6 @@ public class Day {
         }
     }
 
-//    public Reservation[] getRes() {
-//        Reservation[] rs = new Reservation[48];
-//        int counter = 0;
-//        for (Time_Frame frame : frames) {
-//            if (frame.getRes() != null) {
-//                Reservation r = frame.getRes();
-//                rs[counter] = r;
-//                counter++;
-//            }
-//        }
-//        return rs;
-//    }
-
     public boolean hasReservations() { //checks for ANY reservations
         for (Time_Frame frame : frames) {
             if (frame.hasRes()) {

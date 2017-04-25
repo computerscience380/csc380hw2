@@ -14,10 +14,6 @@ public class Parking_Lot {//maybe allow requesting a specific spot? (then check 
     private String parkingLotName;
     private Parking_Spot lot[];
 
-    public void displayRes() {
-        //
-    }
-
     public int reserve(Reservation r, int day, int T1, int T2) { // two or more reservations(will be in a row)
         for (int i = 0; i < lot.length; i++) {
             if (lot[i].spotsAvailble(day, T1, T2)) {

@@ -63,10 +63,6 @@ public class Parking_Spot {
         return days[d-1].can_Res(T1, T2);
     }
     
-    public void displayRes(){
-        
-    }
-    
     public boolean hasReservations(){
         for (Day day: days) {
             if (day.hasReservations()) {
