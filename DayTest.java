@@ -30,24 +30,21 @@ public class DayTest {
         int time2 = 8;
         int day = 1;
         Day d = new Day(day);
-        String one = "1";
-        String two = "2";
-        String three = "3";
-        Account a = new Account("a","a",one,two,three,"student");
+        Account a = new Account("a", "a", "1", "2", "3", "student", "124124");
         Reservation r = new Reservation(a);
-        
+
         Time_Frame[] tf = d.reserve(r, time, time2);
         if (!tf[7].getRes().equals(r)) {
             fail();
         }
-                
-       if (d.can_Res(time, time2)) {
+
+        if (d.can_Res(time, time2)) {
             fail();
         }
     }
-    
+
     @Test
-    public void getResTest(){
+    public void getResTest() {
         int time = 7;
         int time2 = 8;
         int t1 = 1;
@@ -59,34 +56,42 @@ public class DayTest {
         String three = "3";
         int day = 12;
         Day d = new Day(day);
-        
-        Account a = new Account("a","a",one,two,three,"student");
-        Account a2 = new Account("a","a",three,two,one,"student");
-        Account a3 = new Account("a","a",one,one,one,"student");
-        
+
+        Account a = new Account("a", "a", one, two, three, "student", "43");
+        Account a2 = new Account("a", "a", three, two, one, "student", "4333");
+        Account a3 = new Account("a", "a", one, one, one, "student", "3434");
+
         Reservation r1 = new Reservation(a);
         Reservation r2 = new Reservation(a2);
         Reservation r3 = new Reservation(a3);
-        
+
         d.reserve(r1, t1, t2);
         d.reserve(r2, time, time2);
-        d.reserve(r3, tt1, tt2);
-        
-        Reservation[] r = d.getRes();
-        if (!Arrays.asList(r).contains(r1) || !Arrays.asList(r).contains(r2) || !Arrays.asList(r).contains(r3)) {
+        Time_Frame[] frames = d.reserve(r3, tt1, tt2);
+
+        boolean fail = true;
+        for (Time_Frame frame : frames) {
+            if (frame.getRes() != null) {
+                if (frame.getRes().equals(r1) || frame.getRes().equals(r2) || frame.getRes().equals(r3)) {
+                    fail = false;
+                }
+            }
+        }
+        if (fail) {
             fail();
         }
+
     }
-    
+
     @Test
-    public void hasResTest(){
+    public void hasResTest() {
         int day = 12;
         Day d = new Day(day);
-        
+
         if (d.hasReservations()) {
             fail();
         }
-        Account a = new Account("a","a","1","2","3","student");
+        Account a = new Account("a", "a", "1", "2", "3", "student", "554736");
         Reservation r = new Reservation(a);
         d.reserve(r, 2, 4);
         if (!d.hasReservations()) {

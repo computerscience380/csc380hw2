@@ -69,6 +69,7 @@ public class Printer {
                         + "================================= ");
                 break;
             case "account":
+                this.line();
                 System.out.println(
                         "|          ACCOUNT MENU         | \n"
                         + "================================= \n"
@@ -84,16 +85,6 @@ public class Printer {
 
     public void displayLotName(String prompt, int i) {
         System.out.println(i + 1 + ". " + prompt);
-    }
-
-    public void diplayRes(Reservation[] r) {
-        for (int i = 0; i < r.length; i++) {
-            r[i].toString();//???
-        }
-    }
-
-    public void displaySingleRes(Reservation r) {
-        r.toString();//do i need this
     }
 
     public void alert(int many) {

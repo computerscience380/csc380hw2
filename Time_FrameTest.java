@@ -17,13 +17,10 @@ public class Time_FrameTest {
     
     @Test
     public void testHasRes(){
-        Time_Frame t = new Time_Frame();
-        String one = "1";
-        String two = "2";
-        int three = 3;
-        String time = "6:30 am";
-        Reservation r = new Reservation(one, two, three);
-        t.addRes(r, time);
+        Time_Frame t = new Time_Frame(1);
+        Account a = new Account("a","a","1","2","3","student","554736");
+        Reservation r = new Reservation(a);
+        t.reserve(r);
         
         if (!t.hasRes()) {
             fail("ERROR: RESERVATION NOT ADDED");
@@ -32,7 +29,7 @@ public class Time_FrameTest {
     
     @Test
     public void testHasNoRes(){
-        Time_Frame t = new Time_Frame();
+        Time_Frame t = new Time_Frame(1);
         if (t.hasRes()) {
             fail("ERROR: THERE IS A RESERVATION WHEN THERE SHOULD BE NO RESERVATIONS");
         }

@@ -5,6 +5,7 @@
  */
 package com.mycompany.csc380homework;
 
+
 /**
  *
  * @author Sean McGrath

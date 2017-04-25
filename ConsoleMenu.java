@@ -80,7 +80,8 @@ public class ConsoleMenu {
             case 4:
                 pr.outln("Account Selected");
                 Account b = accountMenu(a);
-                if (b != null) {
+                if (!b.getVariable("accountid").equals("0000000000")) {
+                    pr.line();
                     studentMenu(b);
                 }
                 break;
@@ -128,7 +129,8 @@ public class ConsoleMenu {
                 break;
             case 4:
                 pr.outln("Check Spot Selected");
-                this.checkSpot;
+                int lotn = askWhatInt("lot");
+                checkSpot(lotn);
                 adminMenu(a);
                 break;
             case 5:
@@ -139,7 +141,7 @@ public class ConsoleMenu {
             case 6:
                 pr.outln("Account Selected");
                 Account b = accountMenu(a);
-                if (b != null) {
+                if (b.getVariable("accountid").equals("0000000000")) {
                     pr.line();
                     adminMenu(b);
                 }
@@ -167,13 +169,15 @@ public class ConsoleMenu {
                 break;
             case 2:
                 pr.outln("Check Spot Selected");
-                this.checkSpot();
+                int lot = askWhatInt("lot");
+                checkSpot(lot);
                 policeMenu(a);
                 break;
             case 3:
                 pr.outln("Account Selected");
                 Account b = accountMenu(a);
-                if (b != null) {
+                if (!b.getVariable("accountid").equals("0000000000")) {
+                    pr.line();
                     policeMenu(b);
                 }
                 break;
@@ -193,7 +197,7 @@ public class ConsoleMenu {
         switch (command) {
             case 1:
                 pr.outln("Change Selected");
-                accountMenu(accChange(a));//do, return an account b with the changed variables
+                accountMenu(accEdit(a));//do, return an account b with the changed variables
                 break;
             case 2:
                 pr.outln("Information Selected");
@@ -204,7 +208,8 @@ public class ConsoleMenu {
                 pr.outln("Delete Selected");
                 if (accDel(a)) {
                     pr.acc("y");
-                    return null;
+                    Account b = new Account("dead","dead","dead","dead","dead","dead","0000000000");
+                    return b;
                 } else {
                     pr.acc("n");
                     accountMenu(a);
@@ -321,8 +326,27 @@ public class ConsoleMenu {
         }
     }
 
-    private void checkSpot(int lot, int spot) {
-
+    private void checkSpot(int lot) {
+        Parking_Spot[] spots = lots.get(lot).getSpots();
+        pr.outln("There are currently " + spots.length + " parking spots in the lot " + lots.get(lot).getLotName());
+        pr.outln("Which parking spot do you wish to check");
+        int response = inp.intIn();
+        if (response > 0 && response <= spots.length) {
+            if (spots[response - 1].hasReservations()) {
+                Day[] days = spots[response - 1].getDays();
+                for (Day day : days) {
+                    if (day.hasReservations()) {
+                        pr.outln("--On the " + day.getDay() + pr.postfix(day.getDay()));
+                        Time_Frame[] frames = day.getFrames();
+                        pr.printReservations(frames);
+                    }
+                }
+            } else {
+                pr.outln("There are no reservations in this parking spot");
+            }
+        } else {
+            checkSpot(lot);
+        }
     }
 
     private void reserve(Account a) {
@@ -426,6 +450,40 @@ public class ConsoleMenu {
                 pr.outln("ERROR: invalid input");
                 checkAlerts();
             }
+        }
+    }
+
+    private Account accEdit(Account a) {
+        int response = askWhatInt("changewhich");
+        if (response == 1) {//name
+            pr.line();
+            pr.outln("Name Selected");
+            pr.outln("Enter the new name:");
+            String name = inp.strIn();
+            Account b = new Account(a.getVariable("username"), a.getVariable("password"), name, a.getVariable("licenceplate"), a.getVariable("id"), a.getVariable("type"), a.getVariable("accountid"));
+            accs.remove(a);
+            accs.add(b);
+            return b;
+        } else if (response == 2) {//LP
+            pr.line();
+            pr.outln("Licence Plate Selected");
+            pr.outln("Enter the new licence plate:");
+            String lp = inp.strIn();
+            Account b = new Account(a.getVariable("username"), a.getVariable("password"), a.getVariable("name"), lp, a.getVariable("id"), a.getVariable("type"), a.getVariable("accountid"));
+            accs.remove(a);
+            accs.add(b);
+            return b;
+        } else if (response == 3) {//permit
+            pr.line();
+            pr.outln("Permit ID Selected");
+            pr.outln("Enter the new permit ID:");
+            String permit = inp.strIn();
+            Account b = new Account(a.getVariable("username"), a.getVariable("password"), a.getVariable("name"), a.getVariable("licenceplate"), permit, a.getVariable("type"), a.getVariable("accountid"));
+            accs.remove(a);
+            accs.add(b);
+            return b;
+        } else {
+            return null;
         }
     }
 
@@ -572,6 +630,17 @@ public class ConsoleMenu {
                     return askWhatInt("spots");
                 } else {
                     return spots;
+                }
+            case "changewhich":
+                pr.outln("Select what to change");
+                pr.outln("1.  Name");
+                pr.outln("2.  Licence Plate");
+                pr.outln("3.  Perit ID");
+                int response = inp.intIn();
+                if (response > 0 && response < 4) {
+                    return response;
+                } else {
+                    return askWhatInt("changewhich");
                 }
         }
         return -1;

@@ -13,25 +13,14 @@ import static org.junit.Assert.*;
  * @author Sean McGrath
  */
 public class ReservationTest {
-    
-    @Test
-    public void setVariablesTest(){
-        String one = "1";
-        String two = "2";
-        String three = "3";
-        Reservation r = new Reservation(one,two,three);
-        if (r.getName() == null ? one != null : !r.getName().equals(one)) {
-            fail("ERROR: Name not added");
-        }
-        if (r.getPlate() == null ? two != null : !r.getPlate().equals(two)) {
-            fail("ERROR: Plate not added");
-        }
-        if (r.getPermit() == null ? three != null : !r.getPermit().equals(three)) {
-            fail("ERROR: permit not added");
-        }
-        
-    }
-    
 
-   
+    @Test
+    public void setAccountTest() {
+        Account a = new Account("a", "a", "1", "2", "3", "student", "554736");
+        Reservation r = new Reservation(a);
+        if (!r.getAccount().equals(a)) {
+            fail("ERROR: account not added");
+        }
+    }
+
 }
