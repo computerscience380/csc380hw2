@@ -38,23 +38,21 @@ public class Printer {
                         + "|        2. Remove Lot          | \n"
                         + "|        3. Display All         | \n"
                         + "|        4. Check Spot          | \n"
-                        + "|        5. Delete Account      | \n"
-                        + "|        6. Display Lots        | \n"
-                        + "|        7. Remove Reservation  | \n"
-                        + "|        8. Account             | \n"
-                        + "|        9. Logout              | \n"
+                        + "|        5. Display Lots        | \n"
+                        + "|        6. Account             | \n"
+                        + "|        7. Logout              | \n"
                         + "================================= ");
                 break;
             case "student":
                 this.line();
                 System.out.println(
-                        "|           STUDENT MENU          | \n"
+                        "|         STUDENT MENU          | \n"
                         + "================================= \n"
                         + "| Options:                      | \n"
                         + "|        1. Reserve             | \n"
                         + "|        2. Availability        | \n"
                         + "|        3. Alert               | \n"
-                        + "         4. Account             | \n"
+                        + "|        4. Account             | \n"
                         + "|        5. Logout              | \n"
                         + "================================= ");
                 break;
@@ -66,19 +64,20 @@ public class Printer {
                         + "| Options:                      | \n"
                         + "|        1. Display All         | \n"
                         + "|        2. Check Spot          | \n"
-                        + "         3. Account             | \n"
+                        + "|        3. Account             | \n"
                         + "|        4. Logout              | \n"
                         + "================================= ");
                 break;
             case "account":
+                this.line();
                 System.out.println(
                         "|          ACCOUNT MENU         | \n"
                         + "================================= \n"
                         + "| Options:                      | \n"
                         + "|        1. Change              | \n"
-                        + "|        2. Information         | \n" //only 3 maybe
-                        + "|        2. Delete              | \n"
-                        + "|        3. Back                | \n"
+                        + "|        2. Information         | \n"
+                        + "|        3. Delete              | \n"
+                        + "|        4. Back                | \n"
                         + "================================= ");
                 break;
         }
@@ -87,26 +86,16 @@ public class Printer {
     public void displayLotName(String prompt, int i) {
         System.out.println(i + 1 + ". " + prompt);
     }
-    
-    public void diplayRes(Reservation[] r){
-        for (int i = 0; i < r.length; i++) {
-            r[i].toString();//???
-        }
-    }
-    
-    public void displaySingleRes(Reservation r){
-        r.toString();//do i need this
-    }
 
     public void alert(int many) {
         if (many == 1) {
             System.out.println("There is curently " + many + " alert");
-            System.out.println("Check it? "
+            System.out.println("Check it? \n"
                     + "1. yes  \n"
                     + "2. no   \n");
         } else if (many > 1) {
             System.out.println("There are curently " + many + " alerts");
-            System.out.println("Check them?"
+            System.out.println("Check them? \n"
                     + "1. yes  \n"
                     + "2. no   \n");
         }
@@ -220,9 +209,6 @@ public class Printer {
                         + "23. 11:30 \n"
                         + "24. 12:00 \n");
                 break;
-            case "lot":
-                System.out.println("Choose lot:");
-                break;
             case "type":
                 this.line();
                 System.out.println("Select user type: \n"
@@ -230,8 +216,21 @@ public class Printer {
                         + "2. Admin \n"
                         + "3. Police \n");
                 break;
+            case "lotname":
+                this.line();
+                System.out.println("Enter name for parking lot:");
+                break;
+            case "spots":
+                this.line();
+                System.out.println("Enter how many parking spots this lot will have:");
+                break;
+            case "yn":
+                this.line();
+                System.out.println("1. yes");
+                System.out.println("2. no");
+                break;
             default:
-                System.out.println("missing ask");
+                System.out.println("ERROR: missing ask");
                 break;
         }
     }
@@ -239,17 +238,9 @@ public class Printer {
     public void outln(String prompt) {
         System.out.println(prompt);
     }
-    
-    public void out(String prompt){
+
+    public void out(String prompt) {
         System.out.print(prompt);
-    }
-
-    public void error(String prompt) {
-        System.out.println("ERROR: " + prompt);
-    }
-
-    public void selected(String prompt) {
-        System.out.println(prompt + " Selected");
     }
 
     public void canres(int day, int startTime, int endTime) {
@@ -260,7 +251,47 @@ public class Printer {
         System.out.println("There are conflicting times on the " + day + postfix(day) + " from " + toTime(startTime) + " to " + toTime(endTime) + ".");
     }
 
-    private String postfix(int i) {//1st 2nd 3rd ect
+    public void havRes(int day, int startTime, int endTime, int spot) {
+        System.out.println("A reservation has been made on the " + day + postfix(day) + " from " + toTime(startTime) + " to " + toTime(endTime) + " in parking spot #" + spot);
+    }
+
+    public void printReservations(Time_Frame[] frames) {
+        Time_Frame first = null;
+        Time_Frame last = null;
+        for (Time_Frame frame : frames) {
+            if (frame.hasRes()) {
+                if (first == null) {
+                    first = frame;
+                } else if (first != null && last == null && frame.getRes().getAccount().getVariable("accountid").equals(first.getRes().getAccount().getVariable("accountid")) || first != null && last != null && frame.getRes().getAccount().getVariable("accountid").equals(last.getRes().getAccount().getVariable("accountid"))) {
+                    last = frame;
+                } else {
+                    if (last == null) {
+                        System.out.println("-Reserved by '" + first.getRes().getAccount().getVariable("name") + "' from " + toTime(first.getTime()) + " to " + toTime(first.getTime() + 1) + "   Licence plate: " + first.getRes().getAccount().getVariable("licenceplate") + "   Permit ID#: " + first.getRes().getAccount().getVariable("id"));
+                        first = frame;
+                    } else {
+                        System.out.println("-Reserved by '" + first.getRes().getAccount().getVariable("name") + "' from " + toTime(first.getTime()) + " to " + toTime(last.getTime() + 1) + "   Licence plate: " + first.getRes().getAccount().getVariable("licenceplate") + "   Permit ID#: " + first.getRes().getAccount().getVariable("id"));
+                        first = frame;
+                        last = null;
+                    }
+                }
+            } else if (!frame.hasRes() && first != null && last == null) {
+                System.out.println("-Reserved by '" + first.getRes().getAccount().getVariable("name") + "' from " + toTime(first.getTime()) + " to " + toTime(first.getTime() + 1) + "   Licence plate: " + first.getRes().getAccount().getVariable("licenceplate") + "   Permit ID#: " + first.getRes().getAccount().getVariable("id"));
+                first = null;
+            } else if (!frame.hasRes() && first != null && last != null) {
+                System.out.println("-Reserved by '" + first.getRes().getAccount().getVariable("name") + "' from " + toTime(first.getTime()) + " to " + toTime(last.getTime() + 1) + "   Licence plate: " + first.getRes().getAccount().getVariable("licenceplate") + "   Permit ID#: " + first.getRes().getAccount().getVariable("id"));
+                first = null;
+                last = null;
+            }
+        }
+        if (first != null && last == null) {
+            System.out.println("-Reserved by '" + first.getRes().getAccount().getVariable("name") + "' from " + toTime(first.getTime()) + " to " + toTime(first.getTime() + 1) + "   Licence plate: " + first.getRes().getAccount().getVariable("licenceplate") + "   Permit ID#: " + first.getRes().getAccount().getVariable("id"));
+        } else if (first != null && last != null) {
+            System.out.println("-Reserved by '" + first.getRes().getAccount().getVariable("name") + "' from " + toTime(first.getTime()) + " to " + toTime(last.getTime() + 1) + "   Licence plate: " + first.getRes().getAccount().getVariable("licenceplate") + "   Permit ID#: " + first.getRes().getAccount().getVariable("id"));
+        }
+
+    }
+
+    public String postfix(int i) {//1st 2nd 3rd ect
         if (i == 1 || i == 21 || i == 31) {
             return "st";
         } else if (i == 2 || i == 22) {
@@ -272,14 +303,10 @@ public class Printer {
         }
     }
 
-    public void havRes(int day, int startTime, int endTime, int spot) {
-        System.out.println("A reservation has been made on the " + day + postfix(day) + " from " + toTime(startTime) + " to " + toTime(endTime) + " in parking spot #" + spot);
-    }
-
     private String toTime(int i) {
         switch (i) {
             case 0:
-                return "12:00 am";
+                return "Midnight";
             case 1:
                 return "12:30 am";
             case 2:
@@ -327,7 +354,7 @@ public class Printer {
             case 23:
                 return "11:30 am";
             case 24:
-                return "12:00 pm";
+                return "Noon";
             case 25:
                 return "12:30 pm";
             case 26:
@@ -374,9 +401,10 @@ public class Printer {
                 return "11:00 pm";
             case 47:
                 return "11:30 pm";
+            case 48:
+                return "Midnight";
         }
         return null;
     }
 
 }
-//get res that gets a res[] of all then display them(not here obv)
