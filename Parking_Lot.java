@@ -16,6 +16,7 @@ public class Parking_Lot {//maybe allow requesting a specific spot? (then check 
 
     public int reserve(Reservation r, int day, int T1, int T2) { // two or more reservations(will be in a row)
         for (int i = 0; i < lot.length; i++) {
+            lot[i].update();
             if (lot[i].spotsAvailble(day, T1, T2)) {
                 lot[i].reserve(r, day, T1, T2, lot[i].getID());
                 return lot[i].getID();
@@ -45,7 +46,6 @@ public class Parking_Lot {//maybe allow requesting a specific spot? (then check 
 
     public Parking_Lot(int spots, String lotName) {
         Parking_Spot p;
-
         lot = new Parking_Spot[spots];
         for (int i = 0; i < spots; i++) {//initializes all the parking spots
             p = new Parking_Spot(i + 1);

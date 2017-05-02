@@ -5,7 +5,6 @@
  */
 package com.mycompany.csc380homework;
 
-import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -76,13 +75,12 @@ public class DayTest {
                     fail = false;
                 }
             }
-        }
+        }    
         if (fail) {
-            fail();
+        fail();
         }
 
     }
-
     @Test
     public void hasResTest() {
         int day = 12;
