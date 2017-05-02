@@ -20,5 +20,18 @@ public class Parking_SpotTest {
         if (!p.spotsAvailble(1, 5, 8)) {
             fail();
         }
-    } 
+    }
+    @Test
+    public void hasResTest() {
+        Parking_Spot ps = new Parking_Spot(1);
+        if (ps.hasReservations()) {
+            fail();
+        }
+        Account a = new Account("a", "a", "1", "2", "3", "student", "554736");
+        Reservation r = new Reservation(a);
+        ps.reserve(r,1,2,4,1);
+        if (!ps.hasReservations()) {
+            fail();
+        }
+    }
 }

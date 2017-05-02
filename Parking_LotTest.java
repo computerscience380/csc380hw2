@@ -27,14 +27,25 @@ public class Parking_LotTest {
         if (spot != 1) {
             fail();
         }
-        //check for existance of r
     }
-    
     @Test
     public void spotsAvailbleTest(){
         Parking_Lot lot = new Parking_Lot(4, "name");
         if (!lot.spotsAvailble(1, 5, 8)) {
             fail();
         }
-    } 
+    }
+    @Test
+    public void hasResTest() {
+        Parking_Lot pl  = new Parking_Lot(1, "lot name");
+        if (pl.hasReservations()) {
+            fail();
+        }
+        Account a = new Account("a", "a", "1", "2", "3", "student", "554736");
+        Reservation r = new Reservation(a);
+        pl.reserve(r, 1 ,2, 4);
+        if (!pl.hasReservations()) {
+            fail();
+        }
+    }
 }

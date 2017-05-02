@@ -121,10 +121,6 @@ public class Printer {
 
     public void ask(String what) {
         switch (what) {
-            case "day":
-                this.line();
-                System.out.println("Enter the day of the month for reservation:");
-                break;
             case "accdel":
                 System.out.println("Are you sure you want to delete your account?: \n"
                         + "1. yes \n"
@@ -141,14 +137,6 @@ public class Printer {
             case "permit":
                 this.line();
                 System.out.println("Enter parking permit:              ");
-                break;
-            case "username":
-                System.out.println("================================= \n"
-                        + "Enter username:                     ");
-                break;
-            case "password":
-                System.out.println("================================= \n"
-                        + "Enter password:                     ");
                 break;
             case "period":
                 System.out.println("Select period: \n"
@@ -219,10 +207,6 @@ public class Printer {
             case "lotname":
                 this.line();
                 System.out.println("Enter name for parking lot:");
-                break;
-            case "spots":
-                this.line();
-                System.out.println("Enter how many parking spots this lot will have:");
                 break;
             case "yn":
                 this.line();
@@ -306,7 +290,7 @@ public class Printer {
     private String toTime(int i) {
         switch (i) {
             case 0:
-                return "Midnight";
+                return "12:01 am";
             case 1:
                 return "12:30 am";
             case 2:
@@ -402,7 +386,7 @@ public class Printer {
             case 47:
                 return "11:30 pm";
             case 48:
-                return "Midnight";
+                return "11:59 pm";
         }
         return null;
     }

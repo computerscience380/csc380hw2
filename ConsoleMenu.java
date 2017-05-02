@@ -129,8 +129,12 @@ public class ConsoleMenu {
                 break;
             case 4:
                 pr.outln("Check Spot Selected");
+                if(!lots.isEmpty()){
                 int lotn = askWhatInt("lot");
                 checkSpot(lotn);
+                } else {
+                    pr.outln("ERROR: no parking lots");
+                }
                 adminMenu(a);
                 break;
             case 5:
@@ -141,7 +145,7 @@ public class ConsoleMenu {
             case 6:
                 pr.outln("Account Selected");
                 Account b = accountMenu(a);
-                if (b.getVariable("accountid").equals("0000000000")) {
+                if (!b.getVariable("accountid").equals("0000000000")) {
                     pr.line();
                     adminMenu(b);
                 }
@@ -229,9 +233,11 @@ public class ConsoleMenu {
     private void loggin() {
         String user;
         String pass;
-        pr.ask("username");
+        pr.line();
+        pr.outln("Enter username:  ");
         user = inp.strIn();
-        pr.ask("password");
+        pr.line();
+        pr.outln("Enter password:  ");
         pass = inp.strIn();
 
         int auth = authorize(user, pass);
@@ -345,6 +351,7 @@ public class ConsoleMenu {
                 pr.outln("There are no reservations in this parking spot");
             }
         } else {
+            pr.outln("ERROR: invalid input");
             checkSpot(lot);
         }
     }
@@ -433,6 +440,7 @@ public class ConsoleMenu {
     }
 
     private void checkAlerts() {
+        pr.line();
         int response;
         if (!alerts.isEmpty()) {
             pr.alert(alerts.size());
@@ -550,7 +558,8 @@ public class ConsoleMenu {
                 pr.ask("permit");
                 return inp.strIn();
             case "username":
-                pr.ask("username");
+                pr.line();
+                pr.outln("Enter username:  ");
                 String temp = inp.strIn();
                 for (Account acc : accs) {
                     if (acc.getVariable("username").equalsIgnoreCase(temp)) {
@@ -563,7 +572,8 @@ public class ConsoleMenu {
                 }
                 return temp;
             case "password":
-                pr.ask("password");
+                pr.line();
+                pr.outln("Enter password: ");
                 return inp.strIn();
             case "lotname":
                 pr.ask("lotname");
@@ -604,7 +614,8 @@ public class ConsoleMenu {
                 }
             case "day":
                 int day;
-                pr.ask("day");
+                pr.line();
+                pr.outln("Enter the day of the month for reservation:");
                 day = inp.intIn();
                 if (validateDay(day)) {
                     return day;
@@ -623,7 +634,8 @@ public class ConsoleMenu {
                     return lot - 1;
                 }
             case "spots":
-                pr.ask("spots");
+                pr.line();
+                pr.outln("Enter how many parking spots this lot will have:");
                 int spots = inp.intIn();
                 if (spots <= 0) {
                     pr.outln("ERROR: invalid input");

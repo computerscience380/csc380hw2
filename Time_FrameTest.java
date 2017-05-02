@@ -18,20 +18,24 @@ public class Time_FrameTest {
     @Test
     public void testHasRes(){
         Time_Frame t = new Time_Frame(1);
+        if (t.hasRes()) {
+            fail("");
+        }
         Account a = new Account("a","a","1","2","3","student","554736");
         Reservation r = new Reservation(a);
         t.reserve(r);
-        
         if (!t.hasRes()) {
-            fail("ERROR: RESERVATION NOT ADDED");
+            fail("");
         }
     }
-    
     @Test
-    public void testHasNoRes(){
+    public void reserveTest(){
         Time_Frame t = new Time_Frame(1);
-        if (t.hasRes()) {
-            fail("ERROR: THERE IS A RESERVATION WHEN THERE SHOULD BE NO RESERVATIONS");
+        Account a = new Account("a","a","1","2","3","student","554736");
+        Reservation r = new Reservation(a);
+        t.reserve(r);
+        if (!t.getRes().equals(r)) {
+            fail();
         }
     }
 }

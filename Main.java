@@ -11,7 +11,6 @@ package com.mycompany.csc380homework;
  * @author Sean McGrath
  */
 public class Main {
-
     public static void main(String[] args) {
         ConsoleMenu cm = new ConsoleMenu();
         cm.mainMenu();
